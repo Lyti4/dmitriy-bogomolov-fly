@@ -1,8 +1,8 @@
 # Настройки сборки проекта
 [build]
-  command = "bun run build" # Команда для сборки проекта
+  command = "bun install && bun run build" # Команда для сборки проекта
   publish = "dist" # Директория, в которую собирается проект
-  environment = { NODE_VERSION = "20", NPM_FLAGS = "--version" } # Версия NodeJS и флаги NPM
+  environment = { NODE_VERSION = "20", NPM_FLAGS = "--version", BUN_VERSION = "1.0.15" } # Версия NodeJS и флаги NPM
 
 # Настройки изображений и кэширования
 [images]

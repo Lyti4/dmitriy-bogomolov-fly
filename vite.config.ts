@@ -12,5 +12,14 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          splide: ['@splidejs/react-splide', '@splidejs/splide']
+        }
+      }
+    },
   },
 });

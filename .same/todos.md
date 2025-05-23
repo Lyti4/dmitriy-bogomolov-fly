@@ -1,58 +1,42 @@
-# План работ по проекту "dmitriy-bogomolov-fly"
+# МебельЭко - Project Todos
 
-- [x] **Клонировать репозиторий** (https://github.com/Lyti4/dmitriy-bogomolov-fly)
-- [x] **Настройка проекта**:
-    - [x] Установить зависимости с помощью Bun.
-    - [x] Запустить сервер разработки для проверки текущего состояния.
-- [x] **Интеграция Netlify CMS (базовая настройка)**:
-    - [x] Установить пакет `netlify-cms-app` (через CDN).
-    - [x] Создать `public/admin/index.html` для Netlify CMS.
-    - [x] Создать и настроить `public/admin/config.yml`:
-        - [x] Настроить GitHub backend.
-        - [x] Определить коллекцию "portfolio" с полями: название, описание, изображение, категория (если есть).
-        - [x] Обновлена конфигурация `media_folder` и `public_folder` на `public/images/portfolio`.
-        - [x] Обновлены поля коллекции "portfolio" (добавлена галерея, исправлены типы).
-    - [x] Настроить Netlify Identity для аутентификации в CMS.
-    - [x] Настроить Git Gateway в Netlify.
-- [x] **Миграция данных для Netlify CMS**:
-    - [x] Проанализировать текущую структуру данных портфолио в коде (данные жестко закодированы в Portfolio.tsx).
-    - [x] Создать папку для контента портфолио (`src/data/portfolio/` уже существует).
-    - [x] Проверить/преобразовать существующие проекты (изображения и тексты) в Markdown-файлы в `src/data/portfolio/`, согласно структуре в `config.yml` и потребностям компонента.
-    - [x] Установить `gray-matter` для парсинга frontmatter.
-    - [x] Создать markdown-файлы для шкафов (бывшие `wardrobeGroups`).
-    - [x] Проверить/обновить пути к изображениям в markdown-файлах и решить, где будут храниться медиафайлы (`public/images/portfolio/`).
-- [completed] **Интеграция Netlify CMS с фронтендом**:
-    - [x] Модифицировать компонент `Portfolio.tsx` для загрузки данных из markdown-файлов в `src/data/portfolio/` (используя `import.meta.glob` и `gray-matter`).
-    - [x] **Отладка: Портфолио загружается, но отображается пустым/некорректно.**
-        - [x] Исправлена обработка путей к изображениям (удаление/добавление ведущего слеша).
-        - [x] Исправлена логика извлечения `image_path` для галереи из Netlify CMS (использование `img.image` вместо `img.image_path`).
-        - [x] Добавлена фильтрация изображений-заглушек (`placeholder.jpg`).
-        - [x] Проведена диагностика с использованием жестко закодированных данных (подтвердило работоспособность базовой части).
-        - [x] Проанализировать логи для выявления проблем с загрузкой данных из Markdown.
-        - [x] **Решение: Временно заменить динамическую загрузку жестко закодированными данными для проверки отображения**
-- [completed] **Добавление всех изображений в портфолио**:
-    - [x] Добавлены все изображения кухонь (`/images/portfolio/kitchens/`)
-    - [x] Добавлены все изображения ванных комнат (`/images/portfolio/bathroom/`)
-    - [x] Добавлены все изображения шкафов/гардеробов (`/images/portfolio/wardrobes/`)
-    - [x] Добавлен раздел "Проверено в быту" с образцами из разных категорий
-    - [x] Добавлены лаконичные описания для каждого элемента портфолио
-    - [x] Все изображения сгруппированы по логическим категориям
-- [completed] **Оптимизация производительности**:
-    - [x] **Оптимизация загрузки изображений в портфолио**:
-        - [x] Создан компонент `OptimizedImage` с поддержкой ленивой загрузки (lazy loading)
-        - [x] Добавлен запасной вариант отображения при ошибке загрузки
-        - [x] Добавлена анимация при загрузке изображений (плейсхолдер)
-        - [x] Поддержка формата WebP (если доступен)
-        - [x] Предзагрузка важных изображений для быстрого отображения
-        - [x] Поддержка srcset для разных размеров экрана
-    - [ ] Оптимизация шрифтов (предзагрузка основных шрифтов)
-    - [x] Настройка сжатия и кэширования статических ресурсов
-- [completed] **Обзор и чистка кода**:
-    - [x] Удалить старый код (жестко закодированные данные из `Portfolio.tsx`) для управления портфолио и неиспользуемые файлы.
-    - [x] Удалить избыточные/тестовые `console.log` после завершения отладки.
-    - [x] Улучшить структуру и читаемость кода.
-    - [x] Запустить линтер для проверки качества кода.
-- [completed] **Тестирование**:
-    - [x] Протестировать добавление, редактирование и удаление проектов через Netlify CMS.
-    - [x] Протестировать корректное отображение портфолио на публичном сайте с данными из CMS.
-- [completed] **Развертывание** (проверить настройки Netlify для корректной работы CMS).
+## Project Status
+- [x] Initial repo clone
+- [x] Dependencies installation
+- [x] Start development server
+
+## Current Tasks
+- [x] Review project structure
+- [x] Understand existing functionality
+- [x] Identify any issues or bugs
+- [x] Make improvements if needed
+- [x] Prepare for deployment
+
+## Project Structure Review
+- Main components located in src/components/
+- Image assets in public/images/
+- Portfolio data in src/data/portfolio/ (Markdown files)
+- Netlify CMS configuration in public/admin/
+- Main styling using Tailwind CSS
+
+## Functionality Understanding
+- Site is a furniture workshop portfolio website
+- Main sections include: Hero banner, Benefits, Portfolio, Services, About, Contacts
+- Portfolio has filtering by categories: Proven, Kitchens, Cabinets, Tables, Bathroom
+- Portfolio items display in a grid with image carousels
+- Images can be viewed in a modal lightbox
+- Netlify CMS is set up for content management (portfolio items)
+- OptimizedImage component used for lazy loading and image optimization
+
+## Issues Identified
+- The Portfolio.tsx component is using hardcoded data instead of loading from markdown files
+- Image paths in Portfolio.tsx need leading slash fix (line 64 in OptimizedImage.tsx handles this)
+- The server is running correctly but may need better image optimization
+- Netlify CMS integration exists but is not fully utilized for dynamic content
+
+## Issues Fixed
+- Fixed build script for Netlify deployment by modifying package.json
+- Updated vite.config.ts with better rollup options for optimized builds
+- Simplified the build process by removing problematic netlify.cjs file
+- Fixed the direct copy of public folder contents to dist folder
+- Updated build configuration in netlify.toml to use the right build command

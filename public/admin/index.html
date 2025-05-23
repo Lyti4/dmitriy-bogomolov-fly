@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МебельЭко - Панель управления</title>
+  <link rel="stylesheet" href="https://unpkg.com/netlify-cms@^2.0.0/dist/cms.css" />
+  <style>
+    /* Кастомные стили для панели управления */
+    :root {
+      --primary-color: #5AAADF;
+      --secondary-color: #3c87b5;
+      --text-color: #333;
+      --background-color: #f7f7f7;
+      --success-color: #4caf50;
+    }
+
+    /* Фон страницы входа */
+    [data-netlify-identity-menu] > div {
+      background-color: var(--background-color);
+    }
+
+    /* Стилизация кнопок */
+    .nc-button {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .nc-button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    /* Заголовок панели */
+    .nc-appHeader-title {
+      font-weight: 500;
+    }
+
+    /* Прелоадер */
+    .nc-loadingPicture {
+      background-color: var(--primary-color);
+    }
+
+    /* Редактор и форма */
+    .nc-previewPane {
+      background-color: var(--background-color);
+    }
+
+    /* Успешные сообщения */
+    .nc-infoContainer-success {
+      background-color: var(--success-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Скрипт для Netlify CMS -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <!-- Скрипт React для шаблонов предпросмотра -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script>
+    const h = React.createElement;
+    const createClass = React.createClass || window.createReactClass;
+  </script>
+  <!-- Шаблоны предпросмотра -->
+  <script src="/admin/preview-templates.js"></script>
+
+  <!-- Локализация на русский язык -->
+  <script>
+    // Русская локализация для Netlify CMS
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    const ru = {
+      "app": {
+        "header": {
+          "content": "Контент",
+          "workflow": "Рабочий процесс",
+          "media": "Медиа",
+          "quickAdd": "Быстрое добавление"
+        },
+        "sidebar": {
+          "collections": "Коллекции"
+        },
+        "notifications": {
+          "login": "Вход в систему",
+          "deploy": "Публикация",
+          "logout": "Выход из системы"
+        }
+      },
+      "collection": {
+        "sidebar": {
+          "entries": "Записи",
+          "newButton": "Новая запись"
+        }
+      },
+      "editor": {
+        "editorControl": {
+          "field": {
+            "optional": "опционально"
+          }
+        },
+        "editorControlPane": {
+          "widget": {
+            "image": {
+              "chooseDifferent": "Выбрать другой",
+              "chooseUrl": "Указать URL",
+              "replaceImage": "Заменить изображение",
+              "remove": "Удалить",
+              "addUrl": "Добавить URL"
+            }
+          }
+        },
+        "editor": {
+          "onSave": "При сохранении",
+          "onDelete": "При удалении",
+          "uploading": "Загрузка...",
+          "uploadMedia": "Загрузить медиа",
+          "deleteMedia": "Удалить медиа",
+          "deleteEntry": "Удалить запись"
+        }
+      },
+      "ui": {
+        "errorBoundary": {
+          "title": "Ошибка",
+          "details": "Произошла ошибка",
+          "reportIt": "Сообщить об ошибке",
+          "detailsHeading": "Детали"
+        },
+        "errorDialog": {
+          "title": "Ошибка при сохранении"
+        },
+        "settingsDropdown": {
+          "logOut": "Выйти"
+        }
+      }
+    };
+
+    // Регистрация локализации
+    if (window.CMS) {
+      window.CMS.registerLocale('ru', ru);
+      window.CMS.registerPreviewStyle('/admin/admin.css');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# robots.txt для сайта МебельЭко
+
+User-agent: *
+Allow: /
+
+# Запрещаем индексировать админку и служебные файлы
+Disallow: /admin/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Разрешаем индексацию основных страниц и изображений
+Allow: /images/
+Allow: /index.html
+
+# Sitemap
+Sitemap: https://dmitriy-bogomolov-fly.netlify.app/sitemap.xml

@@ -1,0 +1,10 @@
+# Редиректы и правила ревриайта для Netlify
+
+# Админка должна правильно загружаться
+/admin/*    /admin/index.html   200!
+
+# Переадресация на HTTPS
+http://dmitriy-bogomolov-fly.netlify.app/* https://dmitriy-bogomolov-fly.netlify.app/:splat 301!
+
+# SPA: перенаправляем все запросы на index.html
+/*    /index.html   200

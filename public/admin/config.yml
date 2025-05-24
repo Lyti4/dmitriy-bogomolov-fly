@@ -1,0 +1,56 @@
+backend:
+  name: git-gateway
+  branch: main  # Укажите вашу основную ветку
+  commit_messages:
+    create: "Создан {{collection}} «{{slug}}»"
+    update: "Обновлён {{collection}} «{{slug}}»"
+    delete: "Удалён {{collection}} «{{slug}}»"
+    uploadMedia: "Загружено медиа «{{path}}»"
+    deleteMedia: "Удалено медиа «{{path}}»"
+
+# Пути для хранения файлов
+media_folder: "static/images/uploads"  # Где хранятся загруженные файлы
+public_folder: "/images/uploads"      # Публичный путь к файлам
+
+# Настройки локализации
+locale: "ru"  # Русский интерфейс
+
+# Коллекции контента
+collections:
+  # Страницы
+  - name: "pages"
+    label: "Страницы"
+    files:
+      - name: "home"
+        label: "Главная"
+        file: "content/pages/home.md"
+        fields:
+          - { name: "title", label: "Заголовок", widget: "string" }
+          - { name: "body", label: "Контент", widget: "markdown" }
+          - { name: "seo_description", label: "SEO Описание", widget: "text" }
+
+  # Блог
+  - name: "blog"
+    label: "Блог"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { name: "title", label: "Заголовок", widget: "string" }
+      - { name: "date", label: "Дата", widget: "datetime" }
+      - { name: "featured_image", label: "Обложка", widget: "image" }
+      - { name: "excerpt", label: "Краткое описание", widget: "text" }
+      - { name: "body", label: "Контент", widget: "markdown" }
+      - { name: "tags", label: "Теги", widget: "list" }
+
+  # Настройки сайта
+  - name: "settings"
+    label: "Настройки"
+    files:
+      - name: "general"
+        label: "Основные настройки"
+        file: "content/settings/general.json"
+        fields:
+          - { name: "site_title", label: "Название сайта", widget: "string" }
+          - { name: "description", label: "Описание сайта", widget: "text" }
+          - { name: "logo", label: "Логотип", widget: "image" }

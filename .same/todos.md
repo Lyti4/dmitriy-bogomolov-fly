@@ -16,3 +16,4 @@
 - [x] Update Netlify CMS dependencies if needed
 - [x] Test admin panel functionality after fixes - WORKING!
 - [x] Sync admin panel category names with frontend (Интерьеры vs proven)
+- [x] Create portfolio image folders for all categories

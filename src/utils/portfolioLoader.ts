@@ -16,7 +16,7 @@ const parseFrontmatter = (content: string) => {
   const lines = content.split('\n');
   let inFrontmatter = false;
   let frontmatterEnd = 0;
-  const data: any = {};
+  const data: Record<string, any> = {};
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -45,11 +45,14 @@ const parseFrontmatter = (content: string) => {
           value = value.slice(1, -1);
         }
 
-        // Обработка булевых значений
-        if (value === 'true') value = 'true';
-        if (value === 'false') value = 'false';
-
-        data[key] = value;
+        // Обработка булевых значений и присвоение значения
+        if (value === 'true') {
+          data[key] = true;
+        } else if (value === 'false') {
+          data[key] = false;
+        } else {
+          data[key] = value;
+        }
       }
     }
   }

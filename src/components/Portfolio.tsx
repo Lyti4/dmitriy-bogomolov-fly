@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 import '@splidejs/splide/dist/css/splide.min.css';
 import OptimizedImage from './OptimizedImage';
+import { loadPortfolioData } from '../utils/portfolioLoader';
 
 // Определение типов для элементов портфолио
 interface PortfolioItem {
@@ -80,256 +81,282 @@ const Portfolio = () => {
   }, []);
 
   useEffect(() => {
-    // Устанавливаем данные портфолио
-    const hardcodedPortfolioItems: PortfolioItem[] = [
-      {
-        id: 1,
-        category: 'proven',
-        title: 'Кухня с островом - 5 лет использования',
-        image: '/images/portfolio/kitchens/kyxnia10.jpg',
-        description: 'То, что не раздражает и годами работает: кухня из массива дерева с островом, проверенная временем. Фасады и механизмы сохраняют свой первоначальный вид и функциональность.'
-      },
-      {
-        id: 2,
-        category: 'proven',
-        title: 'Угловая кухня - 3 года эксплуатации',
-        image: '/images/portfolio/kitchens/kyxnia3.jpg',
-        description: 'Угловая кухня из массива дерева - сохраняет вид и функциональность на протяжении лет. Проверена интенсивным использованием в семье с детьми.'
-      },
-      {
-        id: 3,
-        category: 'proven',
-        title: 'Встроенные шкафы - 4 года использования',
-        image: '/images/portfolio/kitchens/kyxnia7.jpg',
-        description: 'Встроенные шкафы из натурального дерева, которые выдерживают испытание временем и сохраняют первоначальный вид. Механизмы работают безупречно.'
-      },
-      {
-        id: 4,
-        category: 'kitchens',
-        title: 'Практичность',
-        image: '/images/portfolio/kitchens/kyxnia.jpg',
-        description: 'Кухня выполнена в современном стиле, сочетающем светлые оттенки белого и серого. Практичность кухни подчеркивается наличием удобных выдвижных ящиков и корзин, которые позволяют эффективно использовать пространство. Светлая отделка и глянцевые поверхности создают ощущение простора и чистоты.'
-      },
-      // Группа: 3,4,5 объединены
-      {
-        id: 1001,
-        category: 'kitchens',
-        title: 'Современная кухня (серия 1)',
-        images: [
-          '/images/portfolio/kitchens/kyxnia3.jpg',
-          '/images/portfolio/kitchens/kyxnia4.jpg',
-          '/images/portfolio/kitchens/kyxnia5.jpg',
-        ],
-        description: 'Современная кухня: три ракурса одного изделия.'
-      },
-      // Группа: 6,7 объединены
-      {
-        id: 1002,
-        category: 'kitchens',
-        title: 'Современная кухня (серия 2)',
-        images: [
-          '/images/portfolio/kitchens/kyxnia6.jpg',
-          '/images/portfolio/kitchens/kyxnia7.jpg',
-        ],
-        description: 'Современная кухня: два ракурса одного изделия.'
-      },
-      // Все остальные кухни — одиночные карточки
-      {
-        id: 101,
-        category: 'kitchens',
-        title: 'Кухня: отдельное фото 1',
-        images: ['/images/portfolio/kitchens/kyxnia1.jpg'],
-      },
-      {
-        id: 103,
-        category: 'kitchens',
-        title: 'Кухня: отдельное фото 3',
-        images: ['/images/portfolio/kitchens/kyxnia8.jpg'],
-      },
-      {
-        id: 132,
-        category: 'kitchens',
-        image: '/images/portfolio/kitchens/kyxnia2.jpg',
-        description: 'Кухня выполнена в светлых тонах, что создает ощущение простора и чистоты. Угловая планировка позволяет рационально использовать пространство. Наличие навесных шкафов над рабочей зоной увеличивает полезную площадь для хранения. Рабочая поверхность из HPL и кухонные элементы в светлом оттенке обеспечивают легкость в уборке. Освещение за счет точечных источников света и LED-полосы над рабочей зоной достаточное и равномерное. В целом кухня выглядит функциональной и удобной для повседневного использования.'
-      },
-      {
-        id: 167,
-        category: 'kitchens',
-        image: '/images/portfolio/kitchens/kyxnia9.jpg',
-        description: 'На фото современная кухня. Серые глянцевые фасады, детали из темного дерева, и светлая мраморная столешница создают стильный и лаконичный интерьер. Отсутствие лишних деталей и чёткость линий подчеркивают минималистский характер дизайна.'
-      },
-      {
-        id: 15,
-        category: 'kitchens',
-        title: 'Кухня с островом в современном стиле',
-        image: '/images/portfolio/kitchens/kyxnia10.jpg',
-        description: 'Кухня из натурального дерева'
-      },
-      {
-        id: 9,
-        category: 'bathroom',
-        title: 'Современная тумба для ванной',
-        image: '/images/portfolio/bathroom/Vanna.jpg',
-        description: 'Тумба под раковину с матовыми фасадами и системой хранения'
-      },
-      {
-        id: 10,
-        category: 'bathroom',
-        title: 'Тумба для ванной с ящиками',
-        image: '/images/portfolio/bathroom/Vanna3.jpg',
-        description: 'Тумба с удобными выдвижными ящиками и встроенной раковиной'
-      },
-      {
-        id: 999,
-        category: 'proven',
-        title: 'Desk at a geometric wall',
-        image: '/images/Desk_at_a_geometric_wall.jpg',
-        description: 'Desk at a geometric wall (Unsplash)'
-      },
-      {
-        id: 'vidGlav',
-        category: 'proven',
-        title: 'Видеогалерея: Кухня с фасадами из массива',
-        image: '/images/portfolio/kitchens/vidGlav.jpg',
-        description: 'Кухня с фасадами из массива дерева, выдержавшая испытание временем. Надежные механизмы, натуральные материалы и индивидуальный подход к проекту.'
-      },
-      // Детская мебель
-      {
-        id: 'child1',
-        category: 'children',
-        title: 'Детская кровать-домик',
-        images: ['/images/portfolio/children/bedhouse1.jpg'],
-        description: 'Кровать-домик из массива дерева для детской комнаты.'
-      },
-      {
-        id: 'child2',
-        category: 'children',
-        title: 'Детский письменный стол',
-        images: ['/images/portfolio/children/desk1.jpg'],
-        description: 'Удобный письменный стол для школьника с ящиками для хранения.'
-      },
-      {
-        id: 'child3',
-        category: 'children',
-        title: 'Детский шкаф для одежды',
-        images: ['/images/portfolio/children/wardrobe1.jpg'],
-        description: 'Компактный шкаф для хранения одежды и игрушек.'
-      },
-      // Элементы хранения
-      {
-        id: 'storage1',
-        category: 'storage',
-        title: 'Система хранения в прихожей',
-        images: ['/images/portfolio/storage/hallway1.jpg'],
-        description: 'Встроенная система хранения для верхней одежды и обуви.'
-      },
-      {
-        id: 'storage2',
-        category: 'storage',
-        title: 'Стеллаж для книг',
-        images: ['/images/portfolio/storage/bookshelf1.jpg'],
-        description: 'Открытый стеллаж для книг и декора.'
-      },
-      {
-        id: 'storage3',
-        category: 'storage',
-        title: 'Комод с ящиками',
-        images: ['/images/portfolio/storage/commode1.jpg'],
-        description: 'Комод с выдвижными ящиками для хранения белья и аксессуаров.'
+    // Загружаем данные портфолио
+    const loadData = async () => {
+      try {
+        // Загружаем данные из markdown файлов
+        const markdownItems = await loadPortfolioData();
+
+        // Преобразуем в формат PortfolioItem
+        const portfolioFromMarkdown: PortfolioItem[] = markdownItems.map(item => ({
+          id: item.id,
+          category: item.category,
+          title: item.title,
+          image: item.image,
+          images: item.images,
+          description: item.description
+        }));
+
+        // Жестко прописанные элементы (сохраняем существующие)
+        const hardcodedPortfolioItems: PortfolioItem[] = [
+          {
+            id: 1,
+            category: 'proven',
+            title: 'Кухня с островом - 5 лет использования',
+            image: '/images/portfolio/kitchens/kyxnia10.jpg',
+            description: 'То, что не раздражает и годами работает: кухня из массива дерева с островом, проверенная временем. Фасады и механизмы сохраняют свой первоначальный вид и функциональность.'
+          },
+          {
+            id: 2,
+            category: 'proven',
+            title: 'Угловая кухня - 3 года эксплуатации',
+            image: '/images/portfolio/kitchens/kyxnia3.jpg',
+            description: 'Угловая кухня из массива дерева - сохраняет вид и функциональность на протяжении лет. Проверена интенсивным использованием в семье с детьми.'
+          },
+          {
+            id: 3,
+            category: 'proven',
+            title: 'Встроенные шкафы - 4 года использования',
+            image: '/images/portfolio/kitchens/kyxnia7.jpg',
+            description: 'Встроенные шкафы из натурального дерева, которые выдерживают испытание временем и сохраняют первоначальный вид. Механизмы работают безупречно.'
+          },
+          {
+            id: 4,
+            category: 'kitchens',
+            title: 'Практичность',
+            image: '/images/portfolio/kitchens/kyxnia.jpg',
+            description: 'Кухня выполнена в современном стиле, сочетающем светлые оттенки белого и серого. Практичность кухни подчеркивается наличием удобных выдвижных ящиков и корзин, которые позволяют эффективно использовать пространство. Светлая отделка и глянцевые поверхности создают ощущение простора и чистоты.'
+          },
+          // Группа: 3,4,5 объединены
+          {
+            id: 1001,
+            category: 'kitchens',
+            title: 'Современная кухня (серия 1)',
+            images: [
+              '/images/portfolio/kitchens/kyxnia3.jpg',
+              '/images/portfolio/kitchens/kyxnia4.jpg',
+              '/images/portfolio/kitchens/kyxnia5.jpg',
+            ],
+            description: 'Современная кухня: три ракурса одного изделия.'
+          },
+          // Группа: 6,7 объединены
+          {
+            id: 1002,
+            category: 'kitchens',
+            title: 'Современная кухня (серия 2)',
+            images: [
+              '/images/portfolio/kitchens/kyxnia6.jpg',
+              '/images/portfolio/kitchens/kyxnia7.jpg',
+            ],
+            description: 'Современная кухня: два ракурса одного изделия.'
+          },
+          // Все остальные кухни — одиночные карточки
+          {
+            id: 101,
+            category: 'kitchens',
+            title: 'Кухня: отдельное фото 1',
+            images: ['/images/portfolio/kitchens/kyxnia1.jpg'],
+          },
+          {
+            id: 103,
+            category: 'kitchens',
+            title: 'Кухня: отдельное фото 3',
+            images: ['/images/portfolio/kitchens/kyxnia8.jpg'],
+          },
+          {
+            id: 132,
+            category: 'kitchens',
+            image: '/images/portfolio/kitchens/kyxnia2.jpg',
+            description: 'Кухня выполнена в светлых тонах, что создает ощущение простора и чистоты. Угловая планировка позволяет рационально использовать пространство. Наличие навесных шкафов над рабочей зоной увеличивает полезную площадь для хранения. Рабочая поверхность из HPL и кухонные элементы в светлом оттенке обеспечивают легкость в уборке. Освещение за счет точечных источников света и LED-полосы над рабочей зоной достаточное и равномерное. В целом кухня выглядит функциональной и удобной для повседневного использования.'
+          },
+          {
+            id: 167,
+            category: 'kitchens',
+            image: '/images/portfolio/kitchens/kyxnia9.jpg',
+            description: 'На фото современная кухня. Серые глянцевые фасады, детали из темного дерева, и светлая мраморная столешница создают стильный и лаконичный интерьер. Отсутствие лишних деталей и чёткость линий подчеркивают минималистский характер дизайна.'
+          },
+          {
+            id: 15,
+            category: 'kitchens',
+            title: 'Кухня с островом в современном стиле',
+            image: '/images/portfolio/kitchens/kyxnia10.jpg',
+            description: 'Кухня из натурального дерева'
+          },
+          {
+            id: 9,
+            category: 'bathroom',
+            title: 'Современная тумба для ванной',
+            image: '/images/portfolio/bathroom/Vanna.jpg',
+            description: 'Тумба под раковину с матовыми фасадами и системой хранения'
+          },
+          {
+            id: 10,
+            category: 'bathroom',
+            title: 'Тумба для ванной с ящиками',
+            image: '/images/portfolio/bathroom/Vanna3.jpg',
+            description: 'Тумба с удобными выдвижными ящиками и встроенной раковиной'
+          },
+          {
+            id: 999,
+            category: 'proven',
+            title: 'Desk at a geometric wall',
+            image: '/images/Desk_at_a_geometric_wall.jpg',
+            description: 'Desk at a geometric wall (Unsplash)'
+          },
+          {
+            id: 'vidGlav',
+            category: 'proven',
+            title: 'Видеогалерея: Кухня с фасадами из массива',
+            image: '/images/portfolio/kitchens/vidGlav.jpg',
+            description: 'Кухня с фасадами из массива дерева, выдержавшая испытание временем. Надежные механизмы, натуральные материалы и индивидуальный подход к проекту.'
+          },
+          // Детская мебель
+          {
+            id: 'child1',
+            category: 'children',
+            title: 'Детская кровать-домик',
+            images: ['/images/portfolio/children/bedhouse1.jpg'],
+            description: 'Кровать-домик из массива дерева для детской комнаты.'
+          },
+          {
+            id: 'child2',
+            category: 'children',
+            title: 'Детский письменный стол',
+            images: ['/images/portfolio/children/desk1.jpg'],
+            description: 'Удобный письменный стол для школьника с ящиками для хранения.'
+          },
+          {
+            id: 'child3',
+            category: 'children',
+            title: 'Детский шкаф для одежды',
+            images: ['/images/portfolio/children/wardrobe1.jpg'],
+            description: 'Компактный шкаф для хранения одежды и игрушек.'
+          },
+          // Элементы хранения
+          {
+            id: 'storage1',
+            category: 'storage',
+            title: 'Система хранения в прихожей',
+            images: ['/images/portfolio/storage/hallway1.jpg'],
+            description: 'Встроенная система хранения для верхней одежды и обуви.'
+          },
+          {
+            id: 'storage2',
+            category: 'storage',
+            title: 'Стеллаж для книг',
+            images: ['/images/portfolio/storage/bookshelf1.jpg'],
+            description: 'Открытый стеллаж для книг и декора.'
+          },
+          {
+            id: 'storage3',
+            category: 'storage',
+            title: 'Комод с ящиками',
+            images: ['/images/portfolio/storage/commode1.jpg'],
+            description: 'Комод с выдвижными ящиками для хранения белья и аксессуаров.'
+          }
+        ];
+
+        // Группы шкафов из wardrobeGroups
+        const wardrobeGroups: PortfolioItem[] = [
+          {
+            id: 'garder1',
+            category: 'cabinets',
+            title: 'Гардероб 1',
+            images: [
+              '/images/portfolio/wardrobes/garder1_1.jpg',
+              '/images/portfolio/wardrobes/garder1_2.jpg',
+              '/images/portfolio/wardrobes/garder1_3.jpg',
+              '/images/portfolio/wardrobes/garder1_4.jpg',
+              '/images/portfolio/wardrobes/garder1_5.jpg',
+            ],
+          },
+          {
+            id: 'garder2',
+            category: 'cabinets',
+            title: 'Гардероб 2',
+            images: [
+              '/images/portfolio/wardrobes/garder2_1.jpg',
+              '/images/portfolio/wardrobes/garder2_2.jpg',
+              '/images/portfolio/wardrobes/garder2_3.jpg',
+              '/images/portfolio/wardrobes/garder2_4.jpg',
+            ],
+          },
+          {
+            id: 'prix1',
+            category: 'cabinets',
+            title: 'Prix 1',
+            images: [
+              '/images/portfolio/wardrobes/prix1.jpg',
+              '/images/portfolio/wardrobes/prix1_1.jpg',
+              '/images/portfolio/wardrobes/prix1_2.jpg',
+              '/images/portfolio/wardrobes/prix1_3.jpg',
+              '/images/portfolio/wardrobes/prix1_4.jpg',
+              '/images/portfolio/wardrobes/prix1_5.jpg',
+              '/images/portfolio/wardrobes/prix1_6.jpg',
+            ],
+          },
+          {
+            id: 'prix2',
+            category: 'cabinets',
+            title: 'Prix 2',
+            images: ['/images/portfolio/wardrobes/prix2.jpg'],
+          },
+          {
+            id: 'shkaf1',
+            category: 'wardrobes',
+            title: 'Шкаф 1',
+            images: ['/images/portfolio/wardrobes/shkaf.jpg'],
+          },
+          {
+            id: 'shkaf2',
+            category: 'wardrobes',
+            title: 'Шкаф 2',
+            images: ['/images/portfolio/wardrobes/shkaf1.jpg'],
+          },
+          {
+            id: 'shkaf3',
+            category: 'wardrobes',
+            title: 'Шкаф 3',
+            images: ['/images/portfolio/wardrobes/shkaf2.jpg'],
+          },
+          {
+            id: 'shkaf4',
+            category: 'wardrobes',
+            title: 'Шкаф 4',
+            images: [
+              '/images/portfolio/wardrobes/shkaf3.jpg',
+              '/images/portfolio/wardrobes/shkaf3_1.jpg',
+            ],
+          },
+          // Добавляем стол из оригинального списка
+          {
+            id: 'stol',
+            category: 'shelves',
+            title: 'Письменный стол',
+            description: 'Функциональный письменный стол для работы и учебы',
+            images: ['/images/portfolio/wardrobes/stol.jpg'],
+          }
+        ];
+
+        // Объединяем все элементы: markdown данные + жестко прописанные + группы шкафов
+        const allItems = [...portfolioFromMarkdown, ...hardcodedPortfolioItems, ...wardrobeGroups];
+
+        // Преобразуем в стандартный формат
+        const unifiedItems = allItems.map(item => ({
+          ...item,
+          images: item.images && item.images.length > 0 ? item.images : item.image ? [item.image] : [],
+        }));
+
+        // Устанавливаем состояние
+        setPortfolioItems(unifiedItems);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Ошибка при загрузке портфолио:', error);
+        setIsLoading(false);
       }
-    ];
+    };
 
-    // Группы шкафов из wardrobeGroups
-    const wardrobeGroups: PortfolioItem[] = [
-      {
-        id: 'garder1',
-        category: 'cabinets',
-        title: 'Гардероб 1',
-        images: [
-          '/images/portfolio/wardrobes/garder1_1.jpg',
-          '/images/portfolio/wardrobes/garder1_2.jpg',
-          '/images/portfolio/wardrobes/garder1_3.jpg',
-          '/images/portfolio/wardrobes/garder1_4.jpg',
-          '/images/portfolio/wardrobes/garder1_5.jpg',
-        ],
-      },
-      {
-        id: 'garder2',
-        category: 'cabinets',
-        title: 'Гардероб 2',
-        images: [
-          '/images/portfolio/wardrobes/garder2_1.jpg',
-          '/images/portfolio/wardrobes/garder2_2.jpg',
-          '/images/portfolio/wardrobes/garder2_3.jpg',
-          '/images/portfolio/wardrobes/garder2_4.jpg',
-        ],
-      },
-      {
-        id: 'prix1',
-        category: 'cabinets',
-        title: 'Prix 1',
-        images: [
-          '/images/portfolio/wardrobes/prix1.jpg',
-          '/images/portfolio/wardrobes/prix1_1.jpg',
-          '/images/portfolio/wardrobes/prix1_2.jpg',
-          '/images/portfolio/wardrobes/prix1_3.jpg',
-          '/images/portfolio/wardrobes/prix1_4.jpg',
-          '/images/portfolio/wardrobes/prix1_5.jpg',
-          '/images/portfolio/wardrobes/prix1_6.jpg',
-        ],
-      },
-      {
-        id: 'prix2',
-        category: 'cabinets',
-        title: 'Prix 2',
-        images: ['/images/portfolio/wardrobes/prix2.jpg'],
-      },
-      {
-        id: 'shkaf1',
-        category: 'wardrobes',
-        title: 'Шкаф 1',
-        images: ['/images/portfolio/wardrobes/shkaf.jpg'],
-      },
-      {
-        id: 'shkaf2',
-        category: 'wardrobes',
-        title: 'Шкаф 2',
-        images: ['/images/portfolio/wardrobes/shkaf1.jpg'],
-      },
-      {
-        id: 'shkaf3',
-        category: 'wardrobes',
-        title: 'Шкаф 3',
-        images: ['/images/portfolio/wardrobes/shkaf2.jpg'],
-      },
-      {
-        id: 'shkaf4',
-        category: 'wardrobes',
-        title: 'Шкаф 4',
-        images: [
-          '/images/portfolio/wardrobes/shkaf3.jpg',
-          '/images/portfolio/wardrobes/shkaf3_1.jpg',
-        ],
-      },
-      // Добавляем стол из оригинального списка
-      {
-        id: 'stol',
-        category: 'shelves',
-        title: 'Письменный стол',
-        description: 'Функциональный письменный стол для работы и учебы',
-        images: ['/images/portfolio/wardrobes/stol.jpg'],
-      }
-    ];
-
-    // Объединяем все элементы и преобразуем в стандартный формат
-    const unifiedItems = [...hardcodedPortfolioItems, ...wardrobeGroups].map(item => ({
-      ...item,
-      images: item.images && item.images.length > 0 ? item.images : item.image ? [item.image] : [],
-    }));
-
-    // Устанавливаем состояние
-    setPortfolioItems(unifiedItems);
-    setIsLoading(false);
+    loadData();
   }, []);
 
   const filters = [

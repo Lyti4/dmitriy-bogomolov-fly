@@ -46,8 +46,8 @@ const parseFrontmatter = (content: string) => {
         }
 
         // Обработка булевых значений
-        if (value === 'true') value = true;
-        if (value === 'false') value = false;
+        if (value === 'true') value = 'true';
+        if (value === 'false') value = 'false';
 
         data[key] = value;
       }

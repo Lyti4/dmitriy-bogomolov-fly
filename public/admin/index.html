@@ -61,9 +61,9 @@
   <script src="./react-dom.development.js"></script>
   <script src="./create-react-class.min.js"></script>
 
-  <!-- Netlify CMS -->
-  <script src="./netlify-cms-full.js"></script>
-  <script src="./netlify-identity-widget-full.js"></script>
+  <!-- Netlify CMS from CDN -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <script>
     // Инициализация переменных для предпросмотра
@@ -72,6 +72,8 @@
     // Шаблон предпросмотра для портфолио - используем функциональный компонент
     const PortfolioPreview = (props) => {
       const entry = props.entry;
+      if (!entry) return h('div', {}, 'Загрузка...');
+
       const title = entry.getIn(['data', 'title']) || '';
       const category = entry.getIn(['data', 'category']) || '';
       const description = entry.getIn(['data', 'description']) || '';
@@ -86,9 +88,12 @@
 
         if (images && images.size > 0) {
           images = images.map(img => {
-            const imgPath = img.get('image');
-            return props.getAsset(imgPath).toString();
-          });
+            if (img && img.get) {
+              const imgPath = img.get('image');
+              return imgPath ? props.getAsset(imgPath).toString() : '';
+            }
+            return '';
+          }).filter(img => img);
         } else {
           images = [];
         }
@@ -219,6 +224,14 @@
 
         // Регистрация стилей для предпросмотра
         window.CMS.registerPreviewStyle('/admin/admin.css');
+
+        // Конфигурация бэкенда
+        window.CMS.registerEventListener({
+          name: 'prePublish',
+          handler: ({ author, entry }) => {
+            console.log('Publishing entry:', entry);
+          }
+        });
 
         // Инициализация CMS
         window.CMS.init();

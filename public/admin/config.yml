@@ -42,6 +42,7 @@ collections:
       - name: "images"
         label: "Галерея изображений"
         widget: "list"
+        required: false
         field:
           name: "image"
           label: "Изображение"

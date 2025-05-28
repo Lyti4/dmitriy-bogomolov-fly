@@ -1,0 +1,59 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: "Создан {{collection}} «{{slug}}»"
+    update: "Обновлён {{collection}} «{{slug}}»"
+    delete: "Удалён {{collection}} «{{slug}}»"
+    uploadMedia: "Загружено медиа «{{path}}»"
+    deleteMedia: "Удалено медиа «{{path}}»"
+
+media_folder: "public/images/portfolio"
+public_folder: "/images/portfolio"
+
+locale: "ru"
+
+collections:
+  - name: "portfolio"
+    label: "Портфолио"
+    folder: "src/data/portfolio"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "/"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "select"
+        options:
+          - "kitchens"
+          - "cabinets"
+          - "wardrobes"
+          - "children"
+          - "shelves"
+          - "bathroom"
+          - "proven"
+          - "storage"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "markdown"
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false

@@ -1,0 +1,91 @@
+# Настройки сборки проекта
+[build]
+  command = "bun install && bun run build" # Команда для сборки проекта без запуска линтинга перед сборкой
+  publish = "dist" # Директория, в которую собирается проект
+  environment = { NODE_VERSION = "20", NPM_FLAGS = "--version", BUN_VERSION = "1.0.15" } # Версия NodeJS и флаги NPM
+
+# Настройки изображений и кэширования
+[images]
+  remote_images = ["https://source.unsplash.com/.*", "https://images.unsplash.com/.*", "https://ext.same-assets.com/.*", "https://ugc.same-assets.com/.*"]
+  compress = true # Включить сжатие изображений
+  compress_quality = 85 # Уровень сжатия (85%)
+
+# Заголовки для всех страниц
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "upgrade-insecure-requests"
+
+# Заголовки для кэширования статических ресурсов
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Редиректы
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/portfolio"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Настройки форм Netlify
+[build.processing.forms]
+  parse_multipart = true
+
+# Настройки для Netlify Identity
+[identity]
+  enable = true
+  external_providers = ["github"]
+
+[functions]
+  directory = "functions"
+  # Removed checklinks plugin due to build errors
+
+# Конфигурация плагинов Netlify
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+  [plugins.inputs]
+    output_path = "reports/lighthouse.html"
+
+[[plugins]]
+  package = "netlify-plugin-image-optim"
+
+# Post Processing
+[build.processing]
+  skip_processing = false
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = true
+  minify = true
+[build.processing.html]
+  pretty_urls = true
+[build.processing.images]
+  compress = true

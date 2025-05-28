@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МебельЭко - Панель управления</title>
+  <link rel="stylesheet" href="./netlify-cms.css" />
+  <style>
+    /* Кастомные стили для панели управления */
+    :root {
+      --primary-color: #5AAADF;
+      --secondary-color: #3c87b5;
+      --text-color: #333;
+      --background-color: #f7f7f7;
+      --success-color: #4caf50;
+    }
+
+    /* Фон страницы входа */
+    [data-netlify-identity-menu] > div {
+      background-color: var(--background-color);
+    }
+
+    /* Стилизация кнопок */
+    .nc-button {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .nc-button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    /* Заголовок панели */
+    .nc-appHeader-title {
+      font-weight: 500;
+    }
+
+    /* Прелоадер */
+    .nc-loadingPicture {
+      background-color: var(--primary-color);
+    }
+
+    /* Редактор и форма */
+    .nc-previewPane {
+      background-color: var(--background-color);
+    }
+
+    /* Успешные сообщения */
+    .nc-infoContainer-success {
+      background-color: var(--success-color);
+    }
+  </style>
+</head>
+<body>
+  <div id="netlify-cms-app"></div>
+
+  <!-- React scripts -->
+  <script src="./react.development.js"></script>
+  <script src="./react-dom.development.js"></script>
+  <script src="./create-react-class.min.js"></script>
+
+  <!-- Netlify CMS -->
+  <script src="./netlify-cms-full.js"></script>
+  <script src="./netlify-identity-widget-full.js"></script>
+
+  <script>
+    // Инициализация переменных для предпросмотра
+    const h = React.createElement;
+
+    // Шаблон предпросмотра для портфолио - используем функциональный компонент
+    const PortfolioPreview = (props) => {
+      const entry = props.entry;
+      const title = entry.getIn(['data', 'title']) || '';
+      const category = entry.getIn(['data', 'category']) || '';
+      const description = entry.getIn(['data', 'description']) || '';
+      let imageUrl = entry.getIn(['data', 'image']);
+      let images = entry.getIn(['data', 'images']) || [];
+
+      // Обработка изображений
+      if (props.getAsset) {
+        if (imageUrl) {
+          imageUrl = props.getAsset(imageUrl).toString();
+        }
+
+        if (images && images.size > 0) {
+          images = images.map(img => {
+            const imgPath = img.get('image');
+            return props.getAsset(imgPath).toString();
+          });
+        } else {
+          images = [];
+        }
+      }
+
+      // Если нет изображений в галерее, но есть основное изображение
+      if (images.length === 0 && imageUrl) {
+        images = [imageUrl];
+      }
+
+      // Перевод категорий
+      const categoryLabels = {
+        'kitchens': 'Кухни',
+        'cabinets': 'Шкафы',
+        'shelves': 'Тумбы/столы',
+        'bathroom': 'Мебель для ванных',
+        'proven': 'Проверено в быту'
+      };
+
+      // Класс для категории
+      const categoryClass = `portfolio-category ${category}`;
+
+      return h('div', {className: 'portfolio-item'},
+        h('div', {className: 'portfolio-content'},
+          h('h1', {className: 'portfolio-title'}, title),
+          h('div', {className: categoryClass}, categoryLabels[category] || category),
+          h('div', {className: 'portfolio-description'}, props.widgetFor('description')),
+
+          // Галерея изображений
+          h('div', {className: 'portfolio-gallery'},
+            images.length > 0
+              ? images.map((img, i) => h('img', {
+                  src: img,
+                  key: i,
+                  alt: `${title} - изображение ${i+1}`
+                }))
+              : h('div', {}, 'Нет изображений')
+          )
+        )
+      );
+    };
+
+    // Русская локализация для Netlify CMS
+    const ru = {
+      "app": {
+        "header": {
+          "content": "Контент",
+          "workflow": "Рабочий процесс",
+          "media": "Медиа",
+          "quickAdd": "Быстрое добавление"
+        },
+        "sidebar": {
+          "collections": "Коллекции"
+        },
+        "notifications": {
+          "login": "Вход в систему",
+          "deploy": "Публикация",
+          "logout": "Выход из системы"
+        }
+      },
+      "collection": {
+        "sidebar": {
+          "entries": "Записи",
+          "newButton": "Новая запись"
+        }
+      },
+      "editor": {
+        "editorControl": {
+          "field": {
+            "optional": "опционально"
+          }
+        },
+        "editorControlPane": {
+          "widget": {
+            "image": {
+              "chooseDifferent": "Выбрать другой",
+              "chooseUrl": "Указать URL",
+              "replaceImage": "Заменить изображение",
+              "remove": "Удалить",
+              "addUrl": "Добавить URL"
+            }
+          }
+        },
+        "editor": {
+          "onSave": "При сохранении",
+          "onDelete": "При удалении",
+          "uploading": "Загрузка...",
+          "uploadMedia": "Загрузить медиа",
+          "deleteMedia": "Удалить медиа",
+          "deleteEntry": "Удалить запись"
+        }
+      },
+      "ui": {
+        "errorBoundary": {
+          "title": "Ошибка",
+          "details": "Произошла ошибка",
+          "reportIt": "Сообщить об ошибке",
+          "detailsHeading": "Детали"
+        },
+        "errorDialog": {
+          "title": "Ошибка при сохранении"
+        },
+        "settingsDropdown": {
+          "logOut": "Выйти"
+        }
+      }
+    };
+
+    // Netlify Identity Widget initialization
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    // Wait for CMS to load and register everything
+    window.addEventListener('load', function() {
+      if (window.CMS) {
+        // Регистрация локализации
+        window.CMS.registerLocale('ru', ru);
+
+        // Регистрация шаблона предпросмотра
+        window.CMS.registerPreviewTemplate('portfolio', PortfolioPreview);
+
+        // Регистрация стилей для предпросмотра
+        window.CMS.registerPreviewStyle('/admin/admin.css');
+
+        // Инициализация CMS
+        window.CMS.init();
+      }
+    });
+  </script>
+</body>
+</html>

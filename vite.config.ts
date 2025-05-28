@@ -18,6 +18,12 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src'),
     },
   },
+  define: {
+    global: 'globalThis',
+  },
+  optimizeDeps: {
+    include: ['buffer']
+  },
   assetsInclude: ['**/*.svg'],
   server: {
     host: '0.0.0.0',

@@ -1,3 +1,5 @@
+// Instructions: Исправить загрузку markdown файлов для работы с Vite
+
 import matter from 'gray-matter';
 
 export interface PortfolioMarkdownItem {
@@ -16,16 +18,22 @@ export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
   const portfolioItems: PortfolioMarkdownItem[] = [];
 
   try {
+    console.log('Начинаем загрузку портфолио...');
+
     // Получаем список всех markdown файлов в папке src/data/portfolio
     const portfolioModules = import.meta.glob('/src/data/portfolio/*.md', {
+      eager: true,
       query: '?raw',
       import: 'default'
     });
 
-    for (const path in portfolioModules) {
+    console.log('Найдено модулей:', Object.keys(portfolioModules));
+
+    for (const [path, content] of Object.entries(portfolioModules)) {
       try {
-        const content = await portfolioModules[path]() as string;
-        const { data, content: markdownContent } = matter(content);
+        console.log('Обрабатываем файл:', path);
+        const rawContent = content as string;
+        const { data, content: markdownContent } = matter(rawContent);
 
         // Извлекаем имя файла для использования как ID
         const fileName = path.split('/').pop()?.replace('.md', '') || '';
@@ -56,11 +64,14 @@ export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
           featured: data.featured || false
         };
 
+        console.log('Добавлен элемент:', item);
         portfolioItems.push(item);
       } catch (error) {
         console.warn(`Ошибка при загрузке файла ${path}:`, error);
       }
     }
+
+    console.log('Всего загружено элементов:', portfolioItems.length);
   } catch (error) {
     console.error('Ошибка при загрузке портфолио:', error);
   }

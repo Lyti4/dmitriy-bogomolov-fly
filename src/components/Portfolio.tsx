@@ -86,6 +86,7 @@ const Portfolio = () => {
       try {
         // Загружаем данные из markdown файлов
         const markdownItems = await loadPortfolioData();
+        console.log('Загружено из markdown:', markdownItems);
 
         // Преобразуем в формат PortfolioItem
         const portfolioFromMarkdown: PortfolioItem[] = markdownItems.map(item => ({

@@ -1,7 +1,5 @@
 // Instructions: Исправить загрузку markdown файлов для работы с Vite
 
-import matter from 'gray-matter';
-
 export interface PortfolioMarkdownItem {
   id: string;
   category: string;
@@ -12,6 +10,81 @@ export interface PortfolioMarkdownItem {
   date?: string;
   featured?: boolean;
 }
+
+// Простой парсер frontmatter без dependencies
+const parseFrontmatter = (content: string) => {
+  const lines = content.split('\n');
+  let inFrontmatter = false;
+  let frontmatterEnd = 0;
+  const data: any = {};
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    if (line === '---') {
+      if (!inFrontmatter) {
+        inFrontmatter = true;
+        continue;
+      } else {
+        frontmatterEnd = i;
+        break;
+      }
+    }
+
+    if (inFrontmatter && line) {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex > 0) {
+        const key = line.substring(0, colonIndex).trim();
+        let value = line.substring(colonIndex + 1).trim();
+
+        // Убираем кавычки
+        if (value.startsWith("'") && value.endsWith("'")) {
+          value = value.slice(1, -1);
+        }
+        if (value.startsWith('"') && value.endsWith('"')) {
+          value = value.slice(1, -1);
+        }
+
+        // Обработка булевых значений
+        if (value === 'true') value = true;
+        if (value === 'false') value = false;
+
+        data[key] = value;
+      }
+    }
+  }
+
+  // Обработка массива images (упрощенная)
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.includes('images:')) {
+      const images: string[] = [];
+      for (let j = i + 1; j < lines.length; j++) {
+        const imgLine = lines[j].trim();
+        if (imgLine.startsWith('- image:')) {
+          let imgPath = imgLine.replace('- image:', '').trim();
+          if (imgPath.startsWith("'") && imgPath.endsWith("'")) {
+            imgPath = imgPath.slice(1, -1);
+          }
+          if (imgPath.startsWith('"') && imgPath.endsWith('"')) {
+            imgPath = imgPath.slice(1, -1);
+          }
+          images.push(imgPath);
+        } else if (imgLine && !imgLine.startsWith(' ') && !imgLine.startsWith('-')) {
+          break;
+        }
+      }
+      if (images.length > 0) {
+        data.images = images;
+      }
+      break;
+    }
+  }
+
+  const markdownContent = lines.slice(frontmatterEnd + 1).join('\n').trim();
+
+  return { data, content: markdownContent };
+};
 
 // Функция для загрузки всех markdown файлов из папки portfolio
 export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
@@ -33,7 +106,7 @@ export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
       try {
         console.log('Обрабатываем файл:', path);
         const rawContent = content as string;
-        const { data, content: markdownContent } = matter(rawContent);
+        const { data, content: markdownContent } = parseFrontmatter(rawContent);
 
         // Извлекаем имя файла для использования как ID
         const fileName = path.split('/').pop()?.replace('.md', '') || '';
@@ -41,14 +114,7 @@ export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
         // Обрабатываем массив изображений
         let processedImages: string[] = [];
         if (data.images && Array.isArray(data.images)) {
-          processedImages = data.images.map((img: any) => {
-            if (typeof img === 'string') {
-              return img;
-            } else if (img && img.image) {
-              return img.image;
-            }
-            return '';
-          }).filter(Boolean);
+          processedImages = data.images.filter(Boolean);
         } else if (data.image) {
           processedImages = [data.image];
         }

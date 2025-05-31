@@ -101,37 +101,6 @@ const Portfolio = () => {
         // Жестко прописанные элементы (сохраняем существующие)
         const hardcodedPortfolioItems: PortfolioItem[] = [
           {
-            id: 4,
-            category: 'kitchens',
-            title: 'Практичность',
-            image: '/images/portfolio/kitchens/kyxnia.jpg',
-            description: 'Кухня выполнена в современном стиле, сочетающем светлые оттенки белого и серого. Практичность кухни подчеркивается наличием удобных выдвижных ящиков и корзин, которые позволяют эффективно использовать пространство. Светлая отделка и глянцевые поверхности создают ощущение простора и чистоты.'
-          },
-          // Группа: 3,4,5 объединены
-          {
-            id: 1001,
-            category: 'kitchens',
-            title: 'Современная кухня (серия 1)',
-            images: [
-              '/images/portfolio/kitchens/kyxnia3.jpg',
-              '/images/portfolio/kitchens/kyxnia4.jpg',
-              '/images/portfolio/kitchens/kyxnia5.jpg',
-            ],
-            description: 'Современная кухня: три ракурса одного изделия.'
-          },
-          // Группа: 6,7 объединены
-          {
-            id: 1002,
-            category: 'kitchens',
-            title: 'Современная кухня (серия 2)',
-            images: [
-              '/images/portfolio/kitchens/kyxnia6.jpg',
-              '/images/portfolio/kitchens/kyxnia7.jpg',
-            ],
-            description: 'Современная кухня: два ракурса одного изделия.'
-          },
-          // Все остальные кухни — одиночные карточки
-          {
             id: 132,
             category: 'kitchens',
             image: '/images/portfolio/kitchens/kyxnia2.jpg',

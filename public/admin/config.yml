@@ -1,14 +1,8 @@
 backend:
   name: git-gateway
   branch: main
-  commit_messages:
-    create: "Создан {{collection}} «{{slug}}»"
-    update: "Обновлён {{collection}} «{{slug}}»"
-    delete: "Удалён {{collection}} «{{slug}}»"
-    uploadMedia: "Загружено медиа «{{path}}»"
-    deleteMedia: "Удалено медиа «{{path}}»"
 
-media_folder: "/public/images/portfolio" # Основная папка для медиа
+media_folder: "public/images/portfolio"
 public_folder: "/images/portfolio"
 
 locale: "ru"
@@ -20,8 +14,8 @@ collections:
     create: true
     slug: "{{slug}}"
     preview_path: "/"
-    media_folder: "/public/images/portfolio/{{category}}" # Динамическая папка по категории
-    public_folder: "/images/portfolio/{{category}}"     # Путь для отображения
+    media_folder: "public/images/portfolio/{{category}}" # Динамический путь по категории
+    public_folder: "/images/portfolio/{{category}}"
     fields:
       - name: "title"
         label: "Название проекта"

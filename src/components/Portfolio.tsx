@@ -197,20 +197,6 @@ const Portfolio = () => {
             image: '/images/portfolio/bathroom/Vanna3.jpg',
             description: 'Тумба с удобными выдвижными ящиками и встроенной раковиной'
           },
-          {
-            id: 999,
-            category: 'proven',
-            title: 'Desk at a geometric wall',
-            image: '/images/Desk_at_a_geometric_wall.jpg',
-            description: 'Desk at a geometric wall (Unsplash)'
-          },
-          {
-            id: 'vidGlav',
-            category: 'proven',
-            title: 'Видеогалерея: Кухня с фасадами из массива',
-            image: '/images/portfolio/kitchens/vidGlav.jpg',
-            description: 'Кухня с фасадами из массива дерева, выдержавшая испытание временем. Надежные механизмы, натуральные материалы и индивидуальный подход к проекту.'
-          },
           // Детская мебель
           {
             id: 'child1',

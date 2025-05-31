@@ -57,13 +57,15 @@ const parseFrontmatter = (content: string) => {
     }
   }
 
-  // Обработка массива images (упрощенная)
+  // Обработка массива images (улучшенная для поддержки разных форматов)
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (line.includes('images:')) {
       const images: string[] = [];
       for (let j = i + 1; j < lines.length; j++) {
         const imgLine = lines[j].trim();
+
+        // Поддержка формата "- image: /path/to/image.jpg"
         if (imgLine.startsWith('- image:')) {
           let imgPath = imgLine.replace('- image:', '').trim();
           if (imgPath.startsWith("'") && imgPath.endsWith("'")) {
@@ -73,7 +75,20 @@ const parseFrontmatter = (content: string) => {
             imgPath = imgPath.slice(1, -1);
           }
           images.push(imgPath);
-        } else if (imgLine && !imgLine.startsWith(' ') && !imgLine.startsWith('-')) {
+        }
+        // Поддержка формата "- /path/to/image.jpg"
+        else if (imgLine.startsWith('- ') && !imgLine.includes(':')) {
+          let imgPath = imgLine.replace('- ', '').trim();
+          if (imgPath.startsWith("'") && imgPath.endsWith("'")) {
+            imgPath = imgPath.slice(1, -1);
+          }
+          if (imgPath.startsWith('"') && imgPath.endsWith('"')) {
+            imgPath = imgPath.slice(1, -1);
+          }
+          images.push(imgPath);
+        }
+        // Если строка не начинается с пробела или тире и не пустая - конец массива
+        else if (imgLine && !imgLine.startsWith(' ') && !imgLine.startsWith('-')) {
           break;
         }
       }
@@ -133,7 +148,11 @@ export const loadPortfolioData = async (): Promise<PortfolioMarkdownItem[]> => {
           featured: data.featured || false
         };
 
-        console.log('Добавлен элемент:', item);
+        console.log('Добавлен элемент:', {
+          ...item,
+          imagesCount: processedImages.length,
+          hasGallery: processedImages.length > 1
+        });
         portfolioItems.push(item);
       } catch (error) {
         console.warn(`Ошибка при загрузке файла ${path}:`, error);

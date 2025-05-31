@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test CMS Configuration</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>Тест конфигурации Netlify CMS</h1>
+
+    <div id="test-results"></div>
+
+    <script>
+        const results = document.getElementById('test-results');
+
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        // Тест 1: Проверка доступности config.yml
+        fetch('/admin/config.yml')
+            .then(response => response.text())
+            .then(data => {
+                addResult('✓ Config.yml загружен успешно', 'success');
+
+                // Проверяем, есть ли отдельные коллекции
+                if (data.includes('portfolio-proven') &&
+                    data.includes('portfolio-kitchens') &&
+                    data.includes('portfolio-wardrobes')) {
+                    addResult('✓ Найдены отдельные коллекции для каждой категории', 'success');
+                } else {
+                    addResult('✗ Отдельные коллекции не найдены', 'error');
+                }
+
+                // Проверяем media_folder настройки
+                if (data.includes('public/images/portfolio/proven') &&
+                    data.includes('public/images/portfolio/kitchens')) {
+                    addResult('✓ Настройки media_folder корректны', 'success');
+                } else {
+                    addResult('✗ Настройки media_folder некорректны', 'error');
+                }
+            })
+            .catch(error => {
+                addResult('✗ Ошибка загрузки config.yml: ' + error.message, 'error');
+            });
+
+        // Тест 2: Проверка доступности админ панели
+        fetch('/admin/')
+            .then(response => {
+                if (response.ok) {
+                    addResult('✓ Админ панель доступна по адресу /admin/', 'success');
+                } else {
+                    addResult('✗ Админ панель недоступна', 'error');
+                }
+            })
+            .catch(error => {
+                addResult('✗ Ошибка доступа к админ панели: ' + error.message, 'error');
+            });
+
+        // Тест 3: Проверка структуры папок
+        const testFolders = [
+            '/images/portfolio/proven/',
+            '/images/portfolio/kitchens/',
+            '/images/portfolio/wardrobes/',
+            '/images/portfolio/cabinets/'
+        ];
+
+        testFolders.forEach(folder => {
+            fetch(folder)
+                .then(response => {
+                    if (response.ok) {
+                        addResult(`✓ Папка ${folder} доступна`, 'success');
+                    } else {
+                        addResult(`⚠ Папка ${folder} не найдена (это нормально, если она пустая)`, 'info');
+                    }
+                })
+                .catch(error => {
+                    addResult(`⚠ Папка ${folder} недоступна (это нормально)`, 'info');
+                });
+        });
+
+        // Тест 4: Проверка загрузки тестовых проектов
+        fetch('/src/data/portfolio/test-kitchen-project.md')
+            .then(response => response.text())
+            .then(data => {
+                if (data.includes('category: \'kitchens\'')) {
+                    addResult('✓ Тестовый проект кухни создан корректно', 'success');
+                } else {
+                    addResult('✗ Тестовый проект кухни некорректен', 'error');
+                }
+            })
+            .catch(error => {
+                addResult('✗ Тестовый проект кухни не найден', 'error');
+            });
+
+        addResult('Тестирование завершено. Для полной проверки откройте /admin/ и попробуйте создать новый проект.', 'info');
+    </script>
+</body>
+</html>

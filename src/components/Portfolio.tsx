@@ -132,18 +132,6 @@ const Portfolio = () => {
           },
           // Все остальные кухни — одиночные карточки
           {
-            id: 101,
-            category: 'kitchens',
-            title: 'Кухня: отдельное фото 1',
-            images: ['/images/portfolio/kitchens/kyxnia1.jpg'],
-          },
-          {
-            id: 103,
-            category: 'kitchens',
-            title: 'Кухня: отдельное фото 3',
-            images: ['/images/portfolio/kitchens/kyxnia8.jpg'],
-          },
-          {
             id: 132,
             category: 'kitchens',
             image: '/images/portfolio/kitchens/kyxnia2.jpg',
@@ -154,13 +142,6 @@ const Portfolio = () => {
             category: 'kitchens',
             image: '/images/portfolio/kitchens/kyxnia9.jpg',
             description: 'На фото современная кухня. Серые глянцевые фасады, детали из темного дерева, и светлая мраморная столешница создают стильный и лаконичный интерьер. Отсутствие лишних деталей и чёткость линий подчеркивают минималистский характер дизайна.'
-          },
-          {
-            id: 15,
-            category: 'kitchens',
-            title: 'Кухня с островом в современном стиле',
-            image: '/images/portfolio/kitchens/kyxnia10.jpg',
-            description: 'Кухня из натурального дерева'
           },
           {
             id: 9,

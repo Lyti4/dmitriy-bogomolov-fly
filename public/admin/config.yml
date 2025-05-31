@@ -14,7 +14,7 @@ collections:
     create: true
     slug: "{{slug}}"
     preview_path: "/"
-    media_folder: "public/images/portfolio/{{category}}" # Динамический путь по категории
+    media_folder: "public/images/portfolio/{{category}}"
     public_folder: "/images/portfolio/{{category}}"
     fields:
       - name: "title"

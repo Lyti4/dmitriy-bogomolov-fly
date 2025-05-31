@@ -8,8 +8,8 @@ backend:
     uploadMedia: "Загружено медиа «{{path}}»"
     deleteMedia: "Удалено медиа «{{path}}»"
 
-media_folder: "/public/images/portfolio/{{category}}" # Полный путь к папке
-public_folder: "/images/portfolio/{{category}}"     # Путь для отображения
+media_folder: "/public/images/portfolio" # Основная папка для медиа
+public_folder: "/images/portfolio"
 
 locale: "ru"
 
@@ -20,6 +20,8 @@ collections:
     create: true
     slug: "{{slug}}"
     preview_path: "/"
+    media_folder: "/public/images/portfolio/{{category}}" # Динамическая папка по категории
+    public_folder: "/images/portfolio/{{category}}"     # Путь для отображения
     fields:
       - name: "title"
         label: "Название проекта"

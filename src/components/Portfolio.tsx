@@ -90,13 +90,13 @@ const Portfolio = () => {
 
         // Преобразуем в формат PortfolioItem
         const portfolioFromMarkdown: PortfolioItem[] = markdownItems.map(item => ({
-          id: item.id,
-          category: item.category,
-          title: item.title,
-          image: item.image,
-          images: item.images,
-          description: item.description
-        }));
+  id: item.id,
+  category: item.category,
+  title: item.title,
+  image: item.image,
+  images: item.images || [],
+  description: item.description?.trim() || ''
+}));
 
         // Жестко прописанные элементы (сохраняем существующие)
         const hardcodedPortfolioItems: PortfolioItem[] = [

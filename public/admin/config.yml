@@ -20,6 +20,8 @@ collections:
     create: true
     slug: "{{slug}}"
     preview_path: "/"
+    media_folder: "public/images/portfolio/{{category}}" # Динамическая папка по категории
+    public_folder: "/images/portfolio/{{category}}"     # Путь для отображения
     fields:
       - name: "title"
         label: "Название проекта"

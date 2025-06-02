@@ -118,77 +118,15 @@ const Portfolio = () => {
   fullDescription: item.fullDescription
 }));
 
-        // Жестко прописанные элементы (сохраняем существующие)
+        // Минимальные элементы для категорий без данных из markdown
         const hardcodedPortfolioItems: PortfolioItem[] = [
-          {
-            id: 132,
-            category: 'kitchens',
-            image: '/images/portfolio/kitchens/kyxnia2.jpg',
-            description: 'Кухня выполнена в светлых тонах, что создает ощущение простора и чистоты. Угловая планировка позволяет рационально использовать пространство. Наличие навесных шкафов над рабочей зоной увеличивает полезную площадь для хранения. Рабочая поверхность из HPL и кухонные элементы в светлом оттенке обеспечивают легкость в уборке. Освещение за счет точечных источников света и LED-полосы над рабочей зоной достаточное и равномерное. В целом кухня выглядит функциональной и удобной для повседневного использования.'
-          },
-          {
-            id: 167,
-            category: 'kitchens',
-            image: '/images/portfolio/kitchens/kyxnia9.jpg',
-            description: 'На фото современная кухня. Серые глянцевые фасады, детали из темного дерева, и светлая мраморная столешница создают стильный и лаконичный интерьер. Отсутствие лишних деталей и чёткость линий подчеркивают минималистский характер дизайна.'
-          },
-          {
-            id: 9,
-            category: 'bathroom',
-            title: 'Современная тумба для ванной',
-            image: '/images/portfolio/bathroom/Vanna.jpg',
-            description: 'Тумба под раковину с матовыми фасадами и системой хранения'
-          },
-          {
-            id: 10,
-            category: 'bathroom',
-            title: 'Тумба для ванной с ящиками',
-            image: '/images/portfolio/bathroom/Vanna3.jpg',
-            description: 'Тумба с удобными выдвижными ящиками и встроенной раковиной'
-          },
-          // Детская мебель
-          {
-            id: 'child1',
-            category: 'children',
-            title: 'Детская кровать-домик',
-            images: ['/images/portfolio/children/bedhouse1.jpg'],
-            description: 'Кровать-домик из массива дерева для детской комнаты.'
-          },
-          {
-            id: 'child2',
-            category: 'children',
-            title: 'Детский письменный стол',
-            images: ['/images/portfolio/children/desk1.jpg'],
-            description: 'Удобный письменный стол для школьника с ящиками для хранения.'
-          },
-          {
-            id: 'child3',
-            category: 'children',
-            title: 'Детский шкаф для одежды',
-            images: ['/images/portfolio/children/wardrobe1.jpg'],
-            description: 'Компактный шкаф для хранения одежды и игрушек.'
-          },
-          // Элементы хранения
+          // Оставляем один элемент в категории "Элементы хранения", чтобы раздел не исчез
           {
             id: 'storage1',
             category: 'storage',
-            title: 'Система хранения в прихожей',
-            images: ['/images/portfolio/storage/hallway1.jpg'],
-            description: 'Встроенная система хранения для верхней одежды и обуви.'
-          },
-          {
-            id: 'storage2',
-            category: 'storage',
-            title: 'Стеллаж для книг',
-            images: ['/images/portfolio/storage/bookshelf1.jpg'],
-            description: 'Открытый стеллаж для книг и декора.'
-          },
-          {
-            id: 'storage3',
-            category: 'storage',
-            title: 'Комод с ящиками',
-            images: ['/images/portfolio/storage/commode1.jpg'],
-            description: 'Комод с выдвижными ящиками для хранения белья и аксессуаров.'
+            title: 'Системы хранения',
+            images: ['/images/portfolio/storage/example.jpg'],
+            description: 'Создаем индивидуальные решения для хранения под ваши потребности.'
           }
         ];
 

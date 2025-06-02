@@ -324,9 +324,19 @@ const Portfolio = () => {
     return (
       <div key={`${item.id}-${index}`} className="group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
         <Splide options={{ type: 'loop', gap: '1rem', arrows: true, pagination: true, height: 320 }}>
-          {(item.images && item.images.length > 0 ? item.images : [])
-            .filter(image => image && typeof image === 'string' && image.trim().length > 0)
-            .map((image: string, imgIndex: number) => (
+          {(() => {
+            // Создаем массив изображений: сначала главное изображение, потом галерея
+            const allImages = [];
+            if (item.image && typeof item.image === 'string' && item.image.trim().length > 0) {
+              allImages.push(item.image);
+            }
+            if (item.images && item.images.length > 0) {
+              const additionalImages = item.images.filter(img =>
+                img && typeof img === 'string' && img.trim().length > 0 && img !== item.image
+              );
+              allImages.push(...additionalImages);
+            }
+            return allImages.map((image: string, imgIndex: number) => (
             <SplideSlide key={`${item.id}-${image}-${imgIndex}`}>
               <OptimizedImage
                 src={image}
@@ -335,15 +345,26 @@ const Portfolio = () => {
                 objectFit="cover"
                 priority={index < 3}
                 onClick={() => {
-                  const imagesToShow = item.images && item.images.length > 0 ? item.images : [];
-                  setSelectedImages(imagesToShow);
-                  setSelectedImage(imagesToShow[0] || null);
+                  // Создаем тот же массив изображений для модального окна
+                  const allImages = [];
+                  if (item.image && typeof item.image === 'string' && item.image.trim().length > 0) {
+                    allImages.push(item.image);
+                  }
+                  if (item.images && item.images.length > 0) {
+                    const additionalImages = item.images.filter(img =>
+                      img && typeof img === 'string' && img.trim().length > 0 && img !== item.image
+                    );
+                    allImages.push(...additionalImages);
+                  }
+                  setSelectedImages(allImages);
+                  setSelectedImage(allImages[0] || null);
                   setSelectedTitle(item.title ?? '');
                 }}
                 height={320}
               />
             </SplideSlide>
-          ))}
+            ));
+          })()}
         </Splide>
         {(item.title || item.fullDescription || item.description) && (
           <div className="p-4">

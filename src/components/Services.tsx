@@ -27,10 +27,19 @@ const App = () => {
   return (
     <main className="font-sans text-gray-800">
       {/* Hero Section */}
-      <section className="py-20 bg-[#F9F7F2] text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Мебель<span className="font-medium">Эко</span></h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-600">
+      <section className="min-h-screen bg-[#F9F7F2] flex">
+        <div className="w-1/2 flex items-center justify-center">
+          <img
+            src="/images/kyxnia11111.jpg"
+            alt="МебельЭко логотип"
+            className="max-w-full max-h-full object-contain p-8"
+          />
+        </div>
+        <div className="w-1/2 flex flex-col items-center justify-center px-8">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 text-center">
+            Мебель<span className="font-medium">Эко</span>
+          </h1>
+          <p className="text-lg md:text-xl lg:text-2xl max-w-lg text-gray-600 text-center leading-relaxed">
             Экологичная мебель ручной работы для вашего дома. Делаем корпусную мебель и предметы интерьера.
           </p>
         </div>

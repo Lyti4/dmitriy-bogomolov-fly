@@ -15,15 +15,11 @@ const Header = ({ activePage }: HeaderProps) => {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <a href="#" className="flex items-center">
-          <div className="w-10 h-10 mr-2 rounded flex items-center justify-center bg-[#8DB892] text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-              <path d="M17 11l0 8a1 1 0 0 1 -1 1l-12 0a1 1 0 0 1 -1 -1l0 -8" />
-              <path d="M14 11v-7a1 1 0 0 0 -1 -1h-6a1 1 0 0 0 -1 1v7" />
-              <path d="M5 11l14 0" />
-              <path d="M9 11l0 4" />
-              <path d="M15 11l0 4" />
-            </svg>
-          </div>
+          <img
+            src="/images/kyxnia21_4.jpg"
+            alt="МебельЭко логотип"
+            className="w-10 h-10 mr-2 rounded object-cover"
+          />
           <span className="text-lg font-medium text-gray-800">МебельЭко</span>
         </a>
 

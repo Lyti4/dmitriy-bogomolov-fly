@@ -26,7 +26,7 @@ const OptimizedImage = ({
   className = '',
   width,
   height,
-  objectFit = 'cover',
+  objectFit="contain",
   priority = false,
   onClick,
   sizes

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';More actions
 
 const App = () => {
   const services = [
@@ -7,7 +7,7 @@ const App = () => {
       description:
         "Создайте идеальное пространство с дизайном интерьера «под ключ». Мы разрабатываем индивидуальные решения, учитывая стиль, функциональность и особенности вашего помещения. Наши специалисты помогут вам спланировать зонирование, подобрать мебель и создать гармоничный интерьер.",
       image:
-        "public/images/portfolio/kitchens/kyxnia8.jpg",
+        "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
       ctaText: "Заказать дизайн интерьера →",
       id: "interior-design"
     },
@@ -41,38 +41,22 @@ const App = () => {
   ];
 
   return (
+    <section id="services" className="py-16 relative bg-[#FEFDF7]"> 
     <section id="services" className="py-16 relative bg-[#FEFDF7]">
       {/* Лёгкий фон с текстурой */}
       <div
         className="absolute inset-0"
         style={{
+          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")', 
           backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")',
           opacity: 0.1,
         }}
       ></div>
-      <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
-
-      <div className="relative container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-light text-center mb-4">
-          <span className="font-medium">Услуги</span>
-        </h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          Мы предлагаем полный цикл проектирования и реализации мебельных решений — от дизайна до установки.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              id={service.id}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow duration-300"
-            >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={service.image}
+@@ -73,65 +73,65 @@
                   alt={service.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
+                    e.target.src =
                     (e.target as HTMLImageElement).src =
                       'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
                   }}
@@ -133,5 +117,7 @@ const App = () => {
     </section>
   );
 };
+
+export default App;
 
 export default App;

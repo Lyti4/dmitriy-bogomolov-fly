@@ -1,45 +1,4 @@
-import { useState } from 'react';
-
 const Contacts = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: ''
-  });
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log('Form submitted:', formData);
-    // В реальном приложении здесь был бы код отправки данных на сервер
-    // Данные будут отправлены на email: kinder1418986@gmail.com или по телефону +7 (926) 546-45-45
-    setIsSubmitted(true);
-
-    // Reset form after submission
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      message: ''
-    });
-
-    // Reset submission status after delay
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 5000);
-  };
-
   return (
     <section className="py-16 bg-white" id="contacts">
       <div className="container mx-auto px-4">
@@ -47,8 +6,8 @@ const Contacts = () => {
           Свяжитесь с <span className="font-medium">нами</span>
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
+        <div className="flex justify-center">
+          <div className="max-w-md w-full">
             <div className="bg-[#F9F7F2] p-6 md:p-8 rounded-lg mb-8">
               <h3 className="text-xl font-medium text-gray-800 mb-6">Контактная информация</h3>
 
@@ -91,88 +50,6 @@ const Contacts = () => {
                 </a>
               </div>
             </div>
-          </div>
-
-          <div className="bg-white p-6 md:p-8 rounded-lg shadow-md">
-            <h3 className="text-xl font-medium text-gray-800 mb-6">Заказать консультацию</h3>
-
-            {isSubmitted ? (
-              <div className="bg-green-50 text-green-700 p-4 rounded-md mb-6">
-                <p className="font-medium">Спасибо за обращение!</p>
-                <p>Мы свяжемся с вами в ближайшее время.</p>
-              </div>
-            ) : null}
-
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Ваше имя
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  autoComplete="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8DB892] focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  Телефон
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  autoComplete="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8DB892] focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8DB892] focus:border-transparent"
-                />
-              </div>
-
-              <div className="mb-6">
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Сообщение
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  autoComplete="off"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#8DB892] focus:border-transparent"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#8DB892] hover:bg-[#7AA37E] text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8DB892]"
-              >
-                Отправить
-              </button>
-            </form>
           </div>
         </div>
       </div>

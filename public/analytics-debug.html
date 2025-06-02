@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отладка аналитики - МебельЭко</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-panel { background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .event { background: #e7f3ff; padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .event-name { font-weight: bold; color: #0066cc; }
+        .event-data { font-size: 12px; color: #666; }
+        button { background: #0066cc; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0052a3; }
+    </style>
+</head>
+<body>
+    <h1>Отладка локальной аналитики МебельЭко</h1>
+
+    <div class="debug-panel">
+        <h2>Тестовые кнопки</h2>
+        <button onclick="testPageView()">Test Page View</button>
+        <button onclick="testCustomEvent()">Test Custom Event</button>
+        <button onclick="testOutboundClick()">Test Outbound Link</button>
+        <button onclick="clearEvents()">Очистить события</button>
+        <button onclick="showEvents()">Показать все события</button>
+    </div>
+
+    <div class="debug-panel">
+        <h2>События аналитики</h2>
+        <div id="events-display">
+            <p>События будут отображаться здесь...</p>
+        </div>
+    </div>
+
+    <div class="debug-panel">
+        <h2>Тестовые внешние ссылки</h2>
+        <a href="https://google.com" target="_blank">Ссылка на Google</a><br>
+        <a href="https://github.com" target="_blank">Ссылка на GitHub</a><br>
+        <a href="/portfolio">Внутренняя ссылка (не отслеживается)</a>
+    </div>
+
+    <script>
+        // Имитируем нашу локальную аналитику
+        window.dub = {
+            events: [],
+            track: function(event, properties) {
+                const eventData = {
+                    timestamp: Date.now(),
+                    event: event,
+                    data: properties
+                };
+                this.events.push(eventData);
+                console.log('[Local Dub Analytics] Event tracked:', eventData);
+                updateEventsDisplay();
+            },
+            getEvents: function() {
+                return this.events;
+            },
+            clearEvents: function() {
+                this.events = [];
+                updateEventsDisplay();
+            }
+        };
+
+        function testPageView() {
+            window.dub.track('page_view', {
+                page: '/debug',
+                referrer: document.referrer,
+                timestamp: Date.now()
+            });
+        }
+
+        function testCustomEvent() {
+            window.dub.track('button_click', {
+                button: 'Test Button',
+                section: 'Debug Panel',
+                user_agent: navigator.userAgent
+            });
+        }
+
+        function testOutboundClick() {
+            window.dub.track('outbound_click', {
+                url: 'https://example.com',
+                text: 'Test External Link',
+                timestamp: Date.now()
+            });
+        }
+
+        function clearEvents() {
+            window.dub.clearEvents();
+        }
+
+        function showEvents() {
+            updateEventsDisplay();
+        }
+
+        function updateEventsDisplay() {
+            const events = window.dub.getEvents();
+            const display = document.getElementById('events-display');
+
+            if (events.length === 0) {
+                display.innerHTML = '<p>Нет зарегистрированных событий</p>';
+                return;
+            }
+
+            display.innerHTML = events.map(event => `
+                <div class="event">
+                    <div class="event-name">${event.event}</div>
+                    <div class="event-data">
+                        Время: ${new Date(event.timestamp).toLocaleString()}<br>
+                        Данные: ${JSON.stringify(event.data, null, 2)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Автоматическое отслеживание кликов по внешним ссылкам
+        document.addEventListener('click', function(event) {
+            const link = event.target.closest('a');
+            if (link && link.hostname !== window.location.hostname) {
+                window.dub.track('outbound_click', {
+                    url: link.href,
+                    text: link.textContent,
+                    timestamp: Date.now()
+                });
+            }
+        });
+
+        // Отслеживаем загрузку страницы
+        window.addEventListener('load', function() {
+            testPageView();
+        });
+    </script>
+</body>
+</html>

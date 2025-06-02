@@ -1,0 +1,355 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/portfolio"
+public_folder: "/images/portfolio"
+
+locale: "ru"
+
+# Настройка для автоматической структуры папок
+collections:
+  - name: "portfolio-proven"
+    label: "Интерьеры"
+    folder: "src/data/portfolio/proven"
+    create: true
+    slug: "{{slug}}"
+    # Простая структура без {{slug}} для совместимости
+    media_folder: "{{dirname}}/../../../public/images/portfolio/proven"
+    public_folder: "/images/portfolio/proven"
+    fields: &portfolio_fields
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "proven"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-kitchens"
+    label: "Кухни"
+    folder: "src/data/portfolio/kitchens"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/kitchens"
+    public_folder: "/images/portfolio/kitchens"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "kitchens"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-wardrobes"
+    label: "Шкафы"
+    folder: "src/data/portfolio/wardrobes"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/wardrobes"
+    public_folder: "/images/portfolio/wardrobes"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "wardrobes"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-cabinets"
+    label: "Гардеробные"
+    folder: "src/data/portfolio/cabinets"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/cabinets"
+    public_folder: "/images/portfolio/cabinets"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "cabinets"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-children"
+    label: "Детская мебель"
+    folder: "src/data/portfolio/children"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/children"
+    public_folder: "/images/portfolio/children"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "children"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-shelves"
+    label: "Тумбы/столы"
+    folder: "src/data/portfolio/shelves"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/shelves"
+    public_folder: "/images/portfolio/shelves"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "shelves"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-bathroom"
+    label: "Мебель для ванных"
+    folder: "src/data/portfolio/bathroom"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/bathroom"
+    public_folder: "/images/portfolio/bathroom"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "bathroom"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false
+
+  - name: "portfolio-storage"
+    label: "Элементы хранения"
+    folder: "src/data/portfolio/storage"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "{{dirname}}/../../../public/images/portfolio/storage"
+    public_folder: "/images/portfolio/storage"
+    fields:
+      - name: "title"
+        label: "Название проекта"
+        widget: "string"
+      - name: "category"
+        label: "Категория"
+        widget: "hidden"
+        default: "storage"
+      - name: "image"
+        label: "Главное изображение"
+        widget: "image"
+      - name: "images"
+        label: "Галерея изображений"
+        widget: "list"
+        required: false
+        field:
+          name: "image"
+          label: "Изображение"
+          widget: "image"
+      - name: "description"
+        label: "Описание"
+        widget: "text"
+        required: false
+      - name: "body"
+        label: "Подробное описание"
+        widget: "markdown"
+        required: false
+      - name: "date"
+        label: "Дата создания"
+        widget: "datetime"
+        default: ""
+      - name: "featured"
+        label: "Рекомендуемый"
+        widget: "boolean"
+        default: false

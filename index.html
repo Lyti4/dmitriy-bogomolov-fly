@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="credentialless">
+    <meta http-equiv="Cross-Origin-Resource-Policy" content="same-site">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>МебельЭко - Мебель на заказ из натуральных материалов</title>
+    <meta name="description" content="Изготовление мебели на заказ из натуральных материалов: кухни, шкафы, тумбы и мебель для ванной">
+    <meta name="keywords" content="мебель на заказ, индивидуальный дизайн, кухонные гарнитуры, шкафы, мебель для ванной, натуральные материалы">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/index.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <!-- Netlify Identity Widget -->
+    <script src="/admin/netlify-identity-widget-full.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Редирект в админку после входа
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

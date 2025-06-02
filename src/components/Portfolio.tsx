@@ -108,109 +108,19 @@ const Portfolio = () => {
 
         // Преобразуем в формат PortfolioItem
         const portfolioFromMarkdown: PortfolioItem[] = markdownItems.map(item => ({
-  id: item.id,
-  category: item.category,
-  title: item.title,
-  image: item.image,
-  images: item.images || [],
-  description: item.description?.trim() || '',
-  body: item.body,
-  fullDescription: item.fullDescription
-}));
+          id: item.id,
+          category: item.category,
+          title: item.title,
+          image: item.image,
+          images: item.images || [],
+          description: item.description?.trim() || '',
+          body: item.body,
+          fullDescription: item.fullDescription
+        }));
 
-        // Минимальные элементы для категорий без данных из markdown
-        const hardcodedPortfolioItems: PortfolioItem[] = [
-          // Оставляем один элемент в категории "Элементы хранения", чтобы раздел не исчез
-          {
-            id: 'storage1',
-            category: 'storage',
-            title: 'Системы хранения',
-            images: ['/images/portfolio/storage/example.jpg'],
-            description: 'Создаем индивидуальные решения для хранения под ваши потребности.'
-          }
-        ];
+        const hardcodedPortfolioItems: PortfolioItem[] = [];
 
-        // Группы шкафов из wardrobeGroups
-        const wardrobeGroups: PortfolioItem[] = [
-          {
-            id: 'garder1',
-            category: 'cabinets',
-            title: 'Гардероб 1',
-            images: [
-              '/images/portfolio/wardrobes/garder1_1.jpg',
-              '/images/portfolio/wardrobes/garder1_2.jpg',
-              '/images/portfolio/wardrobes/garder1_3.jpg',
-              '/images/portfolio/wardrobes/garder1_4.jpg',
-              '/images/portfolio/wardrobes/garder1_5.jpg',
-            ],
-          },
-          {
-            id: 'garder2',
-            category: 'cabinets',
-            title: 'Гардероб 2',
-            images: [
-              '/images/portfolio/wardrobes/garder2_1.jpg',
-              '/images/portfolio/wardrobes/garder2_2.jpg',
-              '/images/portfolio/wardrobes/garder2_3.jpg',
-              '/images/portfolio/wardrobes/garder2_4.jpg',
-            ],
-          },
-          {
-            id: 'prix1',
-            category: 'cabinets',
-            title: 'Prix 1',
-            images: [
-              '/images/portfolio/wardrobes/prix1.jpg',
-              '/images/portfolio/wardrobes/prix1_1.jpg',
-              '/images/portfolio/wardrobes/prix1_2.jpg',
-              '/images/portfolio/wardrobes/prix1_3.jpg',
-              '/images/portfolio/wardrobes/prix1_4.jpg',
-              '/images/portfolio/wardrobes/prix1_5.jpg',
-              '/images/portfolio/wardrobes/prix1_6.jpg',
-            ],
-          },
-          {
-            id: 'prix2',
-            category: 'cabinets',
-            title: 'Prix 2',
-            images: ['/images/portfolio/wardrobes/prix2.jpg'],
-          },
-          {
-            id: 'shkaf1',
-            category: 'wardrobes',
-            title: 'Шкаф 1',
-            images: ['/images/portfolio/wardrobes/shkaf.jpg'],
-          },
-          {
-            id: 'shkaf2',
-            category: 'wardrobes',
-            title: 'Шкаф 2',
-            images: ['/images/portfolio/wardrobes/shkaf1.jpg'],
-          },
-          {
-            id: 'shkaf3',
-            category: 'wardrobes',
-            title: 'Шкаф 3',
-            images: ['/images/portfolio/wardrobes/shkaf2.jpg'],
-          },
-          {
-            id: 'shkaf4',
-            category: 'wardrobes',
-            title: 'Шкаф 4',
-            images: [
-              '/images/portfolio/wardrobes/shkaf3.jpg',
-              '/images/portfolio/wardrobes/shkaf3_1.jpg',
-            ],
-          },
-          // Добавляем стол из оригинального списка
-          {
-            id: 'stol',
-            category: 'shelves',
-            title: 'Письменный стол',
-            description: 'Функциональный письменный стол для работы и учебы',
-            images: ['/images/portfolio/wardrobes/stol.jpg'],
-          }
-        ];
+        const wardrobeGroups: PortfolioItem[] = [];
 
         // Объединяем все элементы: markdown данные + жестко прописанные + группы шкафов
         const allItems = [...portfolioFromMarkdown, ...hardcodedPortfolioItems, ...wardrobeGroups];
@@ -280,7 +190,7 @@ const Portfolio = () => {
                 src={image}
                 alt={item.title || 'Фото работы из портфолио'}
                 className="w-full h-80"
-                objectFit="cover"
+                objectFit="contain"
                 priority={index < 3}
                 onClick={() => {
                   // Создаем тот же массив изображений для модального окна

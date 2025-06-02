@@ -3,140 +3,134 @@ import React from 'react';
 const App = () => {
   const services = [
     {
-      title: "Кухни под заказ",
-      description: "Кухня — сердце дома. Мы создаём кухни, которые становятся не просто местом для готовки, а настоящим центром уюта вашей семьи. Изготавливаем по вашим размерам из натурального дерева, МДФ или комбинированных материалов. Вы получаете удобную, функциональную и красивую кухню, в которой всё продумано именно для вас.",
-      image: "https://plus.unsplash.com/premium_photo-1683141179507-734e6157ddba?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8"
+      title: "Проектирование интерьера «под ключ»",
+      description:
+        "Создайте идеальное пространство с дизайном интерьера «под ключ». Мы разрабатываем индивидуальные решения, учитывая стиль, функциональность и особенности вашего помещения. Наши специалисты помогут вам спланировать зонирование, подобрать мебель и создать гармоничный интерьер.",
+      image:
+        "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+      ctaText: "Заказать дизайн интерьера →",
+      id: "interior-design"
     },
     {
-      title: "Шкафы и стеллажи",
-      description: "Порядок и красота начинаются с правильной организации пространства. Мы создаём вместительные шкафы-купе, распашные системы хранения и открытые стеллажи. Внутреннее наполнение подбираем так, чтобы вам было удобно пользоваться каждым уголком. Результат — идеальная гармония между порядком и эстетикой.",
-      image: "https://plus.unsplash.com/premium_photo-1661779760365-a44d80161cee?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8"
+      title: "Интеграция умной мебели и техники",
+      description:
+        "Современная жизнь требует технологий. Мы внедряем беспроводную зарядку, встроенные порты питания и трансформируемые механизмы прямо в мебель. Также поможем подобрать встроенную бытовую технику для кухни и ванной комнаты, чтобы всё было в едином стиле.",
+      image:
+        "https://images.unsplash.com/photo-1600180758890-7fdc4f2b23ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+      ctaText: "Выбрать умную мебель и технику →",
+      id: "smart-furniture"
     },
     {
-      title: "Элементы декора",
-      description: "Иногда именно маленькие детали делают пространство по-настоящему своим. Мы создаём деревянные полки, рамы, панно и перегородки, которые дополняют интерьер и придают ему индивидуальность. Это не просто мебель — это акценты, которые рассказывают историю вашего дома.",
-      image: "/images/Desk_at_a_geometric_wall.jpg"
+      title: "Реализация проекта с авторским надзором",
+      description:
+        "Идеальный дизайн теряет смысл без точного исполнения. Мы предлагаем авторский надзор за проектом — контроль реализации на всех этапах, начиная с замеров и заканчивая финальной расстановкой мебели. Гарантируем качество и соответствие вашей задумке.",
+      image:
+        "https://images.unsplash.com/photo-1586105251261-72a756497c4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+      ctaText: "Заказать авторский надзор →",
+      id: "author-supervision"
     },
     {
-      title: "Мебель для ванной",
-      description: "Даже в самой практичной комнате можно создать уют и эстетику. Наши тумбы, пеналы и зеркала изготавливаются с влагостойкими покрытиями, чтобы служить долго и выглядеть красиво. Вы получаете мебель, которая подчёркивает стиль помещения и экономит пространство.",
-      image: "/images/portfolio/bathroom/Vanna2.jpg"
+      title: "Коммерческие интерьеры и офисы",
+      description:
+        "Привлекательный интерьер — важный фактор успеха бизнеса. Мы создаём дизайн ресторанов, кафе, офисов и отелей, который повышает эффективность работы, привлекает клиентов и формирует узнаваемость бренда. Фокус на эргономику, безопасность и стиль.",
+      image:
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+      ctaText: "Оформить коммерческое помещение →",
+      id: "commercial-design"
     }
   ];
 
   return (
-    <main className="font-sans text-gray-800">
-      {/* Hero Section */}
-      <section className="min-h-screen bg-[#F9F7F2] flex">
-        <div className="w-1/2 flex items-center justify-center">
-          <img
-            src="/images/kyxnia11111.jpg"
-            alt="МебельЭко логотип"
-            className="max-w-full max-h-full object-contain p-8"
-          />
-        </div>
-        <div className="w-1/2 flex flex-col items-center justify-center px-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 text-center">
-            Мебель<span className="font-medium">Эко</span>
-          </h1>
-          <p className="text-lg md:text-xl lg:text-2xl max-w-lg text-gray-600 text-center leading-relaxed">
-            Экологичная мебель ручной работы для вашего дома. Делаем корпусную мебель и предметы интерьера.
-          </p>
-        </div>
-      </section>
-
-      {/* Services Section - добавлен id="services" */}
-      <section id="services" className="py-16 relative bg-[#FEFDF7]">
-        {/* Лёгкий фон с текстурой бумаги */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")',
+    <section id="services" className="py-16 relative bg-[#FEFDF7]"> 
+      {/* Лёгкий фон с текстурой */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")', 
           opacity: 0.1,
-        }}></div>
-        <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
 
-        <div className="relative container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-light text-center mb-4">
-            <span className="font-medium">Услуги</span>
-          </h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Создаём корпусную мебель и предметы интерьера, в которых сочетаются экологичность, надёжность и тепло ручной работы
-          </p>
+      <div className="relative container mx-auto px-4">
+        <h2 className="text-2xl md:text-3xl font-light text-center mb-4">
+          <span className="font-medium">Услуги</span>
+        </h2>
+        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+          Мы предлагаем полный цикл проектирования и реализации мебельных решений — от дизайна до установки.
+        </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow duration-300"
-              >
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
-                    }}
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-medium text-gray-800 mb-2">{service.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                  <a
-                    href="#contacts"
-                    className="inline-block text-[#A89C8C] hover:text-[#8E7B6B] font-medium transition-colors text-sm"
-                  >
-                    Узнать больше →
-                  </a>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              id={service.id}
+              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow duration-300"
+            >
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+                  }}
+                />
               </div>
-            ))}
-          </div>
-
-          <div className="mt-16 bg-white p-6 md:p-8 rounded-lg shadow-md border border-[#E6E2D9]">
-            <h3 className="text-xl font-medium text-gray-800 mb-4">Как мы работаем</h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                  <span className="font-medium">1</span>
-                </div>
-                <h4 className="font-medium text-gray-800 mb-2">Знакомство</h4>
-                <p className="text-xs text-gray-600">Обсуждаем ваши идеи и особенности пространства</p>
+              <div className="p-5">
+                <h3 className="text-lg font-medium text-gray-800 mb-2">{service.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">{service.description}</p>
+                <a
+                  href="#contacts"
+                  className="inline-block text-[#A89C8C] hover:text-[#8E7B6B] font-medium transition-colors text-sm"
+                >
+                  {service.ctaText}
+                </a>
               </div>
+            </div>
+          ))}
+        </div>
 
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                  <span className="font-medium">2</span>
-                </div>
-                <h4 className="font-medium text-gray-800 mb-2">Проект</h4>
-                <p className="text-xs text-gray-600">Создаем чертежи и визуализацию будущей мебели</p>
-              </div>
+        <div className="mt-16 bg-white p-6 md:p-8 rounded-lg shadow-md border border-[#E6E2D9]">
+          <h3 className="text-xl font-medium text-gray-800 mb-4">Как мы работаем</h3>
 
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                  <span className="font-medium">3</span>
-                </div>
-                <h4 className="font-medium text-gray-800 mb-2">Создание</h4>
-                <p className="text-xs text-gray-600">Вручную изготавливаем мебель с любовью к деталям</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                <span className="font-medium">1</span>
               </div>
+              <h4 className="font-medium text-gray-800 mb-2">Знакомство</h4>
+              <p className="text-xs text-gray-600">Обсуждаем ваши идеи и особенности пространства</p>
+            </div>
 
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                  <span className="font-medium">4</span>
-                </div>
-                <h4 className="font-medium text-gray-800 mb-2">Установка</h4>
-                <p className="text-xs text-gray-600">Привозим и собираем мебель у вас дома</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                <span className="font-medium">2</span>
               </div>
+              <h4 className="font-medium text-gray-800 mb-2">Проект</h4>
+              <p className="text-xs text-gray-600">Создаем чертежи и визуализацию будущей мебели</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                <span className="font-medium">3</span>
+              </div>
+              <h4 className="font-medium text-gray-800 mb-2">Создание</h4>
+              <p className="text-xs text-gray-600">Вручную изготавливаем мебель с любовью к деталям</p>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                <span className="font-medium">4</span>
+              </div>
+              <h4 className="font-medium text-gray-800 mb-2">Установка</h4>
+              <p className="text-xs text-gray-600">Привозим и собираем мебель у вас дома</p>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 bg-[#F9F7F2] text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} &quot;Не мода. Не массовое производство. Просто мебель, разработанная для жизни и сделанная от сердца.&quot;
-      </footer>
-    </main>
+      </div>
+    </section>
   );
 };
 

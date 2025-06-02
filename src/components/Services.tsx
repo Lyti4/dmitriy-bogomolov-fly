@@ -41,12 +41,12 @@ const App = () => {
   ];
 
   return (
-    <section id="services" className="py-16 relative bg-[#FEFDF7]"> 
+    <section id="services" className="py-16 relative bg-[#FEFDF7]">
       {/* Лёгкий фон с текстурой */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")', 
+          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")',
           opacity: 0.1,
         }}
       ></div>
@@ -73,7 +73,7 @@ const App = () => {
                   alt={service.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.target.src =
+                    (e.target as HTMLImageElement).src =
                       'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
                   }}
                 />

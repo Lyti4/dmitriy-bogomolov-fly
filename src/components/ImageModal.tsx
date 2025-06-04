@@ -173,7 +173,7 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
           ref={imageRef}
           src={images[currentIndex]}
           alt={`${projectTitle || 'Изображение'} - ${currentIndex + 1}`}
-          className={`max-w-full max-h-full object-contain cursor-pointer transition-all duration-300 ${
+          className={`max-w-full max-h-full max-h-[90vh] object-contain cursor-pointer transition-all duration-300 ${
             isZoomed ? 'scale-150' : 'scale-100'
           } ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onClick={handleImageClick}

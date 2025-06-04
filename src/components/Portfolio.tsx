@@ -161,7 +161,7 @@ const Portfolio = () => {
       type: 'loop' as const,
       gap: '0.5rem',
       arrows: !isMobile,
-      pagination: true,
+      pagination: !isMobile, // Скрываем точки на мобильных устройствах
       height: isMobile ? 250 : 320,
       perPage: 1,
       perMove: 1,
@@ -201,14 +201,16 @@ const Portfolio = () => {
             <Splide options={getSliderOptions()}>
               {allImages.map((image: string, imgIndex: number) => (
                 <SplideSlide key={`${item.id}-${image}-${imgIndex}`}>
-                  <div className="relative cursor-pointer group/image">
+                  <div
+                    className="relative cursor-pointer group/image"
+                    onClick={() => openModal(item, imgIndex)}
+                  >
                     <OptimizedImage
                       src={image}
                       alt={item.title || 'Фото работы из портфолио'}
                       className="w-full h-64 md:h-80 transition-transform duration-500 group-hover/image:scale-105"
                       objectFit="cover"
                       priority={index < 3}
-                      onClick={() => openModal(item, imgIndex)}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
                     <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
@@ -221,14 +223,16 @@ const Portfolio = () => {
               ))}
             </Splide>
           ) : allImages.length === 1 ? (
-            <div className="relative cursor-pointer group/image">
+            <div
+              className="relative cursor-pointer group/image"
+              onClick={() => openModal(item, 0)}
+            >
               <OptimizedImage
                 src={allImages[0]}
                 alt={item.title || 'Фото работы из портфолио'}
                 className="w-full h-64 md:h-80 transition-transform duration-500 group-hover/image:scale-105"
                 objectFit="cover"
                 priority={index < 3}
-                onClick={() => openModal(item, 0)}
               />
               <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
               <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">

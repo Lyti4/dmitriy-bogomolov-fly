@@ -196,7 +196,7 @@ const Portfolio = () => {
     return (
       <div className="w-full -mt-16">
         {/* Главная карточка на весь экран */}
-        <AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[700px] overflow-hidden group w-full">
+        <AnimatedSection animation="fadeIn" className="relative h-[80vh] min-h-[1000px] overflow-hidden group w-full">
           <div className="absolute inset-0">
             {mainImages.length > 1 ? (
               <Splide options={{

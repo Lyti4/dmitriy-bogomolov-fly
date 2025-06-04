@@ -175,7 +175,193 @@ const Portfolio = () => {
     };
   };
 
-  // Рендер элемента портфолио
+  // Рендер специальной компоновки для категории "Интерьеры"
+  const renderInteriorLayout = () => {
+    if (filteredItems.length === 0) return null;
+
+    const [mainItem, ...otherItems] = filteredItems;
+
+    // Создаем массив изображений для главного элемента
+    const mainImages = [];
+    if (mainItem.image && typeof mainItem.image === 'string' && mainItem.image.trim().length > 0) {
+      mainImages.push(mainItem.image);
+    }
+    if (mainItem.images && mainItem.images.length > 0) {
+      const additionalImages = mainItem.images.filter(img =>
+        img && typeof img === 'string' && img.trim().length > 0 && img !== mainItem.image
+      );
+      mainImages.push(...additionalImages);
+    }
+
+    return (
+      <div className="space-y-8">
+        {/* Главная карточка на весь экран */}
+        <AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[500px] rounded-2xl overflow-hidden group shadow-2xl">
+          <div className="absolute inset-0">
+            {mainImages.length > 1 ? (
+              <Splide options={{
+                type: 'loop',
+                gap: '0rem',
+                arrows: true,
+                pagination: true,
+                height: '100%',
+                perPage: 1,
+                perMove: 1,
+                autoplay: true,
+                interval: 5000,
+                pauseOnHover: true,
+                speed: 800,
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+              }}>
+                {mainImages.map((image: string, imgIndex: number) => (
+                  <SplideSlide key={`main-${mainItem.id}-${imgIndex}`}>
+                    <div className="relative h-full">
+                      <OptimizedImage
+                        src={image}
+                        alt={mainItem.title || 'Главный проект интерьера'}
+                        className="w-full h-full"
+                        objectFit="cover"
+                        priority={true}
+                        onClick={() => openModal(mainItem, imgIndex)}
+                      />
+                    </div>
+                  </SplideSlide>
+                ))}
+              </Splide>
+            ) : mainImages.length === 1 ? (
+              <OptimizedImage
+                src={mainImages[0]}
+                alt={mainItem.title || 'Главный проект интерьера'}
+                className="w-full h-full"
+                objectFit="cover"
+                priority={true}
+                onClick={() => openModal(mainItem, 0)}
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Нет изображения</span>
+              </div>
+            )}
+
+            {/* Легкий градиент только внизу для читаемости текста */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent"></div>
+
+            {/* Иконка увеличения */}
+            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                 onClick={() => openModal(mainItem, 0)}>
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
+            </div>
+
+            {/* Индикатор количества фото */}
+            {mainImages.length > 1 && (
+              <div className="absolute top-4 left-4 bg-black/50 text-white text-sm px-3 py-1.5 rounded-full backdrop-blur-sm">
+                📷 {mainImages.length}
+              </div>
+            )}
+          </div>
+
+          {/* Контент поверх изображения */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+            <div className="max-w-3xl">
+              {mainItem.title && (
+                <h3 className="text-2xl md:text-4xl font-bold mb-4 drop-shadow-lg">
+                  {mainItem.title}
+                </h3>
+              )}
+              {(mainItem.fullDescription || mainItem.description) && (
+                <div
+                  className="text-lg md:text-xl leading-relaxed opacity-90 line-clamp-3 drop-shadow-lg"
+                  dangerouslySetInnerHTML={{
+                    __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
+                  }}
+                />
+              )}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Остальные карточки в слайдере */}
+        {otherItems.length > 0 && (
+          <AnimatedSection animation="slideUp" delay={200}>
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+                Другие проекты интерьеров
+              </h3>
+              <p className="text-gray-600">Нажмите на любой проект, чтобы увидеть детали</p>
+            </div>
+
+            <Splide options={{
+              type: 'slide',
+              gap: '1.5rem',
+              arrows: true,
+              pagination: false,
+              perPage: 3,
+              perMove: 1,
+              breakpoints: {
+                768: { perPage: 1 },
+                1024: { perPage: 2 },
+                1280: { perPage: 3 }
+              },
+              wheel: true,
+              wheelSleep: 300,
+              drag: true,
+              swipe: true,
+            }}>
+              {otherItems.map((item, index) => (
+                <SplideSlide key={`other-${item.id}-${index}`}>
+                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1"
+                       onClick={() => openModal(item, 0)}>
+                    <div className="relative h-64 overflow-hidden">
+                      <OptimizedImage
+                        src={item.image || (item.images && item.images[0]) || ''}
+                        alt={item.title || 'Проект интерьера'}
+                        className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                        objectFit="cover"
+                        priority={index < 3}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                      </div>
+
+                      {/* Индикатор количества фото для слайдера */}
+                      {item.images && item.images.length > 1 && (
+                        <div className="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                          📷 {item.images.length}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4">
+                      {item.title && (
+                        <h4 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
+                          {item.title}
+                        </h4>
+                      )}
+                      {(item.fullDescription || item.description) && (
+                        <div
+                          className="text-gray-600 text-sm line-clamp-2"
+                          dangerouslySetInnerHTML={{
+                            __html: renderMarkdown(item.fullDescription || item.description || '')
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </SplideSlide>
+              ))}
+            </Splide>
+          </AnimatedSection>
+        )}
+      </div>
+    );
+  };
+
+  // Рендер элемента портфолио (для остальных категорий)
   const renderPortfolioItem = (item: PortfolioItem, index: number) => {
     // Создаем массив изображений: сначала главное изображение, потом галерея
     const allImages = [];
@@ -328,7 +514,11 @@ const Portfolio = () => {
               Для категории "{filters.find(f => f.id === activeFilter)?.name}" пока нет работ.
             </div>
           </AnimatedSection>
+        ) : activeFilter === 'proven' ? (
+          // Специальная компоновка для категории "Интерьеры"
+          renderInteriorLayout()
         ) : (
+          // Обычная сетка для остальных категорий
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {filteredItems.map((item, index) => renderPortfolioItem(item, index))}
           </div>

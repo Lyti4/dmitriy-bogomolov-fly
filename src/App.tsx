@@ -46,7 +46,7 @@ function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -56,7 +56,9 @@ function App() {
     <div className="font-sans antialiased text-gray-900 bg-white min-h-screen">
       <Header activePage={activePage} />
       <main>
-        <HeroBanner />
+        <section id="home">
+          <HeroBanner />
+        </section>
         <Benefits />
         <Portfolio />
         <Services />

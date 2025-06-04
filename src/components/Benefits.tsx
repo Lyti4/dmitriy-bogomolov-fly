@@ -1,3 +1,5 @@
+import AnimatedSection from './AnimatedSection';
+
 const Benefits = () => {
   const benefits = [
     {
@@ -54,8 +56,8 @@ const Benefits = () => {
     .trim();
 
   return (
-    <section 
-      className="py-16 relative"
+    <section
+      className="py-16 md:py-20 relative overflow-hidden"
       style={{
         backgroundImage: `url('${paperTexture}')`,
         backgroundColor: '#FEFDF7'
@@ -65,29 +67,35 @@ const Benefits = () => {
       <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
 
       <div className="relative container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-light text-center mb-4">
-          Почему выбирают <span className="font-medium">МебельЭко</span>
-        </h2>
-        <p className="text-center text-gray-600 max-w-xl mx-auto mb-12">
-          Потому что мы делаем не просто мебель — мы создаём уют, тепло и гармонию в вашем доме.
-        </p>
+        <AnimatedSection animation="fadeIn" className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-light mb-4">
+            Почему выбирают <span className="font-medium text-[#8DB892]">МебельЭко</span>
+          </h2>
+          <p className="text-center text-gray-600 text-lg max-w-2xl mx-auto">
+            Потому что мы делаем не просто мебель — мы создаём уют, тепло и гармонию в вашем доме.
+          </p>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {benefits.map((benefit, index) => (
-            <div
+            <AnimatedSection
               key={index}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 text-center"
+              animation="slideUp"
+              delay={index * 150}
+              className="group"
             >
-              <div className="flex justify-center items-center w-12 h-12 mx-auto mb-4 rounded-full bg-[#E6E2D9] text-[#A89C8C]">
-                {benefit.icon}
+              <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 text-center h-full transform group-hover:-translate-y-2">
+                <div className="flex justify-center items-center w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8DB892] to-[#7BA583] text-white transform group-hover:scale-110 transition-transform duration-300">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
+                  {benefit.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {benefit.description}
+                </p>
               </div>
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                {benefit.title}
-              </h3>
-              <p className="text-gray-600">
-                {benefit.description}
-              </p>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
       </div>

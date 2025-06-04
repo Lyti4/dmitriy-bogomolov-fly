@@ -16,7 +16,7 @@ const HeroBanner = () => {
   };
 
   return (
-    <section className="relative h-[100vh] min-h-[600px] max-h-[800px] overflow-hidden">
+    <section className="relative h-[100vh] min-h-[500px] sm:min-h-[600px] max-h-[800px] overflow-hidden">
       {/* Фоновое изображение */}
       <div className="absolute inset-0">
         <img

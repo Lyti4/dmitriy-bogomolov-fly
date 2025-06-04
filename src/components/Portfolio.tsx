@@ -17,6 +17,8 @@ interface PortfolioItem {
   description?: string;
   body?: string;
   fullDescription?: string;
+  featured?: boolean;
+  date?: string;
 }
 
 // Функция предварительной загрузки изображений (не используется в данной версии)
@@ -84,7 +86,9 @@ const Portfolio = () => {
           images: item.images || [],
           description: item.description?.trim() || '',
           body: item.body,
-          fullDescription: item.fullDescription
+          fullDescription: item.fullDescription,
+          featured: item.featured || false,
+          date: item.date
         }));
 
         const hardcodedPortfolioItems: PortfolioItem[] = [];
@@ -122,9 +126,20 @@ const Portfolio = () => {
     { id: 'storage', name: 'Элементы хранения' }
   ];
 
-  // Фильтруем элементы по активной категории и мемоизируем результат
+  // Фильтруем элементы по активной категории и сортируем (featured первые)
   const filteredItems = useMemo(() =>
-    portfolioItems.filter(item => item.category === activeFilter),
+    portfolioItems
+      .filter(item => item.category === activeFilter)
+      .sort((a, b) => {
+        // Сначала featured элементы
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        // Затем по дате (новые первыми)
+        if (a.date && b.date) {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+        return 0;
+      }),
     [portfolioItems, activeFilter]
   );
 
@@ -194,9 +209,9 @@ const Portfolio = () => {
     }
 
     return (
-      <div className="w-full -mt-16">
+      <div className="w-full">
         {/* Главная карточка на весь экран */}
-        <AnimatedSection animation="fadeIn" className="relative h-[80vh] min-h-[1000px] overflow-hidden group w-full">
+        <AnimatedSection animation="fadeIn" className="relative h-[70vh] sm:h-[80vh] min-h-[600px] sm:min-h-[800px] overflow-hidden group w-full">
           <div className="absolute inset-0">
             {mainImages.length > 1 ? (
               <Splide options={{
@@ -212,7 +227,9 @@ const Portfolio = () => {
                 pauseOnHover: true,
                 speed: 800,
                 easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-              }}>
+              }}
+              className="[&_.splide__pagination]:!bottom-4 [&_.splide__pagination]:!z-30 [&_.splide__pagination__page]:!bg-white/50 [&_.splide__pagination__page.is-active]:!bg-white [&_.splide__arrow]:!bg-white/20 [&_.splide__arrow]:!border-none [&_.splide__arrow]:!z-30 [&_.splide__arrow]:backdrop-blur-sm [&_.splide__arrow]:hover:!bg-white/40"
+              >
                 {mainImages.map((image: string, imgIndex: number) => (
                   <SplideSlide key={`main-${mainItem.id}-${imgIndex}`}>
                     <div className="relative h-full">
@@ -220,7 +237,7 @@ const Portfolio = () => {
                         src={image}
                         alt={mainItem.title || 'Главный проект интерьера'}
                         className="w-full h-full"
-                        objectFit="contain"
+                        objectFit="cover"
                         priority={true}
                         onClick={() => openModal(mainItem, imgIndex)}
                       />
@@ -259,17 +276,36 @@ const Portfolio = () => {
             )}
           </div>
 
-          {/* Контент поверх изображения */}
-          <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-            <div className="max-w-md bg-black/20 backdrop-blur-sm rounded-lg p-4">
+          {/* Контент поверх изображения - мобильная версия (левый верхний угол) */}
+          <div className="absolute top-4 left-4 right-4 z-20 md:hidden">
+            <div className="max-w-xs bg-black/60 backdrop-blur-md rounded-lg p-3 shadow-2xl">
               {mainItem.title && (
-                <h3 className="text-lg md:text-xl font-bold mb-2 text-white">
+                <h3 className="text-lg font-bold mb-2 text-white drop-shadow-2xl">
                   {mainItem.title}
                 </h3>
               )}
               {(mainItem.fullDescription || mainItem.description) && (
                 <div
-                  className="text-sm md:text-base leading-snug text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white"
+                  className="text-xs leading-relaxed text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
+                  dangerouslySetInnerHTML={{
+                    __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Контент поверх изображения - десктопная версия (нижний левый угол) */}
+          <div className="absolute bottom-6 left-6 right-6 z-20 hidden md:block">
+            <div className="max-w-md bg-black/50 backdrop-blur-md rounded-lg p-6 shadow-2xl">
+              {mainItem.title && (
+                <h3 className="text-2xl lg:text-3xl font-bold mb-3 text-white drop-shadow-2xl">
+                  {mainItem.title}
+                </h3>
+              )}
+              {(mainItem.fullDescription || mainItem.description) && (
+                <div
+                  className="text-base lg:text-lg leading-relaxed text-white line-clamp-3 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
                   dangerouslySetInnerHTML={{
                     __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
                   }}
@@ -279,9 +315,9 @@ const Portfolio = () => {
           </div>
         </AnimatedSection>
 
-        {/* Остальные карточки в слайдере */}
+        {/* Остальные карточки в слайдере - исправленное позиционирование */}
         {otherItems.length > 0 && (
-          <div className="container mx-auto px-4 lg:px-8 mt-8">
+          <div className="container mx-auto px-4 lg:px-8 py-8 mt-8">
             <AnimatedSection animation="slideUp" delay={200}>
               <div className="mb-6">
                 <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
@@ -293,12 +329,14 @@ const Portfolio = () => {
             <Splide options={{
               type: 'slide',
               gap: '0.5rem',
-              arrows: true,
+              arrows: windowSize.width >= 768,
               pagination: false,
-              perPage: 3,
+              perPage: windowSize.width >= 1280 ? 3 : windowSize.width >= 1024 ? 2 : windowSize.width >= 768 ? 2 : 3.5,
               perMove: 1,
               breakpoints: {
-                768: { perPage: 3, gap: '0.5rem' },
+                480: { perPage: 3.5, gap: '0.5rem' },
+                640: { perPage: 3.5, gap: '0.5rem' },
+                768: { perPage: 2, gap: '0.75rem' },
                 1024: { perPage: 2, gap: '1rem' },
                 1280: { perPage: 3, gap: '1.5rem' }
               },
@@ -309,40 +347,40 @@ const Portfolio = () => {
             }}>
               {otherItems.map((item, index) => (
                 <SplideSlide key={`other-${item.id}-${index}`}>
-                  <div className="bg-white overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1"
+                  <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
                        onClick={() => openModal(item, 0)}>
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-24 sm:h-32 md:h-48 lg:h-56 xl:h-64 overflow-hidden flex-shrink-0">
                       <OptimizedImage
                         src={item.image || (item.images && item.images[0]) || ''}
                         alt={item.title || 'Проект интерьера'}
                         className="w-full h-full transition-transform duration-500 group-hover:scale-105"
-                        objectFit="contain"
+                        objectFit="cover"
                         priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-white/90 backdrop-blur-sm rounded-full p-1 sm:p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                         </svg>
                       </div>
 
                       {/* Индикатор количества фото для слайдера */}
                       {item.images && item.images.length > 1 && (
-                        <div className="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                        <div className="absolute bottom-1 left-1 sm:bottom-2 sm:left-2 bg-black/70 text-white text-xs px-1 py-0.5 sm:px-1.5 rounded-full backdrop-blur-sm">
                           📷 {item.images.length}
                         </div>
                       )}
                     </div>
 
-                    <div className="p-4">
+                    <div className="p-2 sm:p-3 md:p-4 flex-grow flex flex-col">
                       {item.title && (
-                        <h4 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
+                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
                           {item.title}
                         </h4>
                       )}
                       {(item.fullDescription || item.description) && (
                         <div
-                          className="text-gray-600 text-sm line-clamp-2"
+                          className="text-gray-600 text-xs line-clamp-2 flex-grow hidden sm:block"
                           dangerouslySetInnerHTML={{
                             __html: renderMarkdown(item.fullDescription || item.description || '')
                           }}
@@ -379,9 +417,9 @@ const Portfolio = () => {
         key={`${item.id}-${index}`}
         animation="slideUp"
         delay={index * 100}
-        className="group overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white"
+        className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white h-full flex flex-col"
       >
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden flex-shrink-0">
           {allImages.length > 1 ? (
             <Splide options={getSliderOptions()}>
               {allImages.map((image: string, imgIndex: number) => (
@@ -390,13 +428,15 @@ const Portfolio = () => {
                     className="relative cursor-pointer group/image"
                     onClick={() => openModal(item, imgIndex)}
                   >
-                    <OptimizedImage
-                      src={image}
-                      alt={item.title || 'Фото работы из портфолио'}
-                      className="w-full h-48 md:h-56 transition-transform duration-500 group-hover/image:scale-105"
-                      objectFit="contain"
-                      priority={index < 3}
-                    />
+                    <div className="w-full h-64 sm:h-72 bg-gray-100 flex items-center justify-center overflow-hidden">
+                      <OptimizedImage
+                        src={image}
+                        alt={item.title || 'Фото работы из портфолио'}
+                        className="w-full h-full transition-transform duration-500 group-hover/image:scale-105"
+                        objectFit="cover"
+                        priority={index < 3}
+                      />
+                    </div>
                     <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
                     <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
                       <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,13 +452,15 @@ const Portfolio = () => {
               className="relative cursor-pointer group/image"
               onClick={() => openModal(item, 0)}
             >
-              <OptimizedImage
-                src={allImages[0]}
-                alt={item.title || 'Фото работы из портфолио'}
-                className="w-full h-48 md:h-56 transition-transform duration-500 group-hover/image:scale-105"
-                objectFit="contain"
-                priority={index < 3}
-              />
+              <div className="w-full h-64 sm:h-72 bg-gray-100 flex items-center justify-center overflow-hidden">
+                <OptimizedImage
+                  src={allImages[0]}
+                  alt={item.title || 'Фото работы из портфолио'}
+                  className="w-full h-full transition-transform duration-500 group-hover/image:scale-105"
+                  objectFit="cover"
+                  priority={index < 3}
+                />
+              </div>
               <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
               <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
                 <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -427,7 +469,7 @@ const Portfolio = () => {
               </div>
             </div>
           ) : (
-            <div className="w-full h-48 md:h-56 bg-gray-200 flex items-center justify-center">
+            <div className="w-full h-64 sm:h-72 bg-gray-200 flex items-center justify-center">
               <span className="text-gray-500">Нет изображения</span>
             </div>
           )}
@@ -441,15 +483,15 @@ const Portfolio = () => {
         </div>
 
         {(item.title || item.fullDescription || item.description) && (
-          <div className="p-4 md:p-6">
+          <div className="p-4 md:p-6 flex-grow flex flex-col">
             {item.title && (
-              <h3 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-[#8DB892] transition-colors">
+              <h3 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
                 {item.title}
               </h3>
             )}
             {(item.fullDescription || item.description) && (
               <div
-                className="text-gray-600 text-sm prose prose-sm max-w-none line-clamp-3"
+                className="text-gray-600 text-sm prose prose-sm max-w-none line-clamp-3 flex-grow"
                 dangerouslySetInnerHTML={{
                   __html: renderMarkdown(item.fullDescription || item.description || '')
                 }}

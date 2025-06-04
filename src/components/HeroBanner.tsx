@@ -16,25 +16,25 @@ const HeroBanner = () => {
   };
 
   return (
-    <section className="relative h-[100vh] min-h-[500px] sm:min-h-[600px] max-h-[800px] overflow-hidden">
+    <section className="relative h-screen min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] overflow-hidden">
       {/* Фоновое изображение */}
       <div className="absolute inset-0">
         <img
           src="/images/vidGlav.jpg"
           alt="Геометрия. Тишина. Совершенство."
-          className="w-full h-full object-cover object-center scale-105 animate-slow-zoom"
+          className="w-full h-full object-cover object-center sm:object-center lg:scale-105 animate-slow-zoom"
         />
         {/* Overlay для лучшей читаемости */}
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Контент баннера */}
-      <div className="relative h-full container mx-auto px-4 z-10 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center w-full">
+      <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 z-10 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
           {/* Левая часть - триада концепции */}
           <AnimatedSection animation="slideLeft" className="text-center lg:text-left">
-            <div className="mb-6 lg:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-4 drop-shadow-2xl text-black">
+            <div className="mb-8 lg:mb-10">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light mb-6 drop-shadow-2xl text-black">
                 <AnimatedSection animation="slideUp" delay={200}>
                   <span className="block opacity-90">Геометрия.</span>
                 </AnimatedSection>
@@ -47,7 +47,7 @@ const HeroBanner = () => {
               </h1>
             </div>
             <AnimatedSection animation="fadeIn" delay={800}>
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl drop-shadow-lg max-w-lg mx-auto lg:mx-0 text-black leading-relaxed">
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl drop-shadow-lg max-w-2xl mx-auto lg:mx-0 text-black leading-relaxed">
                 Три принципа, превращающие мебель<br className="hidden sm:block" />
                 <span className="sm:hidden"> </span>в философию пространства
               </p>

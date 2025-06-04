@@ -194,9 +194,9 @@ const Portfolio = () => {
     }
 
     return (
-      <div className="space-y-8">
+      <div className="w-full -mt-16">
         {/* Главная карточка на весь экран */}
-        <AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[500px] rounded-2xl overflow-hidden group shadow-2xl">
+        <AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[500px] overflow-hidden group w-full">
           <div className="absolute inset-0">
             {mainImages.length > 1 ? (
               <Splide options={{
@@ -220,7 +220,7 @@ const Portfolio = () => {
                         src={image}
                         alt={mainItem.title || 'Главный проект интерьера'}
                         className="w-full h-full"
-                        objectFit="cover"
+                        objectFit="contain"
                         priority={true}
                         onClick={() => openModal(mainItem, imgIndex)}
                       />
@@ -243,9 +243,6 @@ const Portfolio = () => {
               </div>
             )}
 
-            {/* Легкий градиент только внизу для читаемости текста */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent"></div>
-
             {/* Иконка увеличения */}
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                  onClick={() => openModal(mainItem, 0)}>
@@ -263,16 +260,16 @@ const Portfolio = () => {
           </div>
 
           {/* Контент поверх изображения */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
-            <div className="max-w-3xl">
+          <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
+            <div className="max-w-md bg-black/20 backdrop-blur-sm rounded-lg p-4">
               {mainItem.title && (
-                <h3 className="text-2xl md:text-4xl font-bold mb-4 drop-shadow-lg">
+                <h3 className="text-lg md:text-xl font-bold mb-2 text-white">
                   {mainItem.title}
                 </h3>
               )}
               {(mainItem.fullDescription || mainItem.description) && (
                 <div
-                  className="text-lg md:text-xl leading-relaxed opacity-90 line-clamp-3 drop-shadow-lg"
+                  className="text-sm md:text-base leading-snug text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white"
                   dangerouslySetInnerHTML={{
                     __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
                   }}
@@ -284,25 +281,26 @@ const Portfolio = () => {
 
         {/* Остальные карточки в слайдере */}
         {otherItems.length > 0 && (
-          <AnimatedSection animation="slideUp" delay={200}>
-            <div className="mb-6">
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
-                Другие проекты интерьеров
-              </h3>
-              <p className="text-gray-600">Нажмите на любой проект, чтобы увидеть детали</p>
-            </div>
+          <div className="container mx-auto px-4 lg:px-8 mt-8">
+            <AnimatedSection animation="slideUp" delay={200}>
+              <div className="mb-6">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+                  Другие проекты интерьеров
+                </h3>
+                <p className="text-gray-600">Нажмите на любой проект, чтобы увидеть детали</p>
+              </div>
 
             <Splide options={{
               type: 'slide',
-              gap: '1.5rem',
+              gap: '0.5rem',
               arrows: true,
               pagination: false,
               perPage: 3,
               perMove: 1,
               breakpoints: {
-                768: { perPage: 1 },
-                1024: { perPage: 2 },
-                1280: { perPage: 3 }
+                768: { perPage: 3, gap: '0.5rem' },
+                1024: { perPage: 2, gap: '1rem' },
+                1280: { perPage: 3, gap: '1.5rem' }
               },
               wheel: true,
               wheelSleep: 300,
@@ -311,14 +309,14 @@ const Portfolio = () => {
             }}>
               {otherItems.map((item, index) => (
                 <SplideSlide key={`other-${item.id}-${index}`}>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1"
+                  <div className="bg-white overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1"
                        onClick={() => openModal(item, 0)}>
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-48 overflow-hidden">
                       <OptimizedImage
                         src={item.image || (item.images && item.images[0]) || ''}
                         alt={item.title || 'Проект интерьера'}
                         className="w-full h-full transition-transform duration-500 group-hover:scale-105"
-                        objectFit="cover"
+                        objectFit="contain"
                         priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
@@ -355,7 +353,8 @@ const Portfolio = () => {
                 </SplideSlide>
               ))}
             </Splide>
-          </AnimatedSection>
+            </AnimatedSection>
+          </div>
         )}
       </div>
     );
@@ -380,7 +379,7 @@ const Portfolio = () => {
         key={`${item.id}-${index}`}
         animation="slideUp"
         delay={index * 100}
-        className="group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-500 bg-white"
+        className="group overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white"
       >
         <div className="relative overflow-hidden">
           {allImages.length > 1 ? (
@@ -394,8 +393,8 @@ const Portfolio = () => {
                     <OptimizedImage
                       src={image}
                       alt={item.title || 'Фото работы из портфолио'}
-                      className="w-full h-64 md:h-80 transition-transform duration-500 group-hover/image:scale-105"
-                      objectFit="cover"
+                      className="w-full h-48 md:h-56 transition-transform duration-500 group-hover/image:scale-105"
+                      objectFit="contain"
                       priority={index < 3}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
@@ -416,8 +415,8 @@ const Portfolio = () => {
               <OptimizedImage
                 src={allImages[0]}
                 alt={item.title || 'Фото работы из портфолио'}
-                className="w-full h-64 md:h-80 transition-transform duration-500 group-hover/image:scale-105"
-                objectFit="cover"
+                className="w-full h-48 md:h-56 transition-transform duration-500 group-hover/image:scale-105"
+                objectFit="contain"
                 priority={index < 3}
               />
               <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
@@ -428,7 +427,7 @@ const Portfolio = () => {
               </div>
             </div>
           ) : (
-            <div className="w-full h-64 md:h-80 bg-gray-200 flex items-center justify-center">
+            <div className="w-full h-48 md:h-56 bg-gray-200 flex items-center justify-center">
               <span className="text-gray-500">Нет изображения</span>
             </div>
           )}
@@ -475,7 +474,7 @@ const Portfolio = () => {
 
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white" id="portfolio">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 lg:px-8">
         <AnimatedSection animation="fadeIn" className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-light mb-4">
             Наши <span className="font-medium text-[#8DB892]">работы</span>
@@ -508,22 +507,24 @@ const Portfolio = () => {
           </div>
         </AnimatedSection>
 
-        {filteredItems.length === 0 ? (
-          <AnimatedSection animation="fadeIn" className="text-center py-12">
-            <div className="text-gray-500 text-lg">
-              Для категории "{filters.find(f => f.id === activeFilter)?.name}" пока нет работ.
+        {activeFilter !== 'proven' && (
+          filteredItems.length === 0 ? (
+            <AnimatedSection animation="fadeIn" className="text-center py-12">
+              <div className="text-gray-500 text-lg">
+                Для категории "{filters.find(f => f.id === activeFilter)?.name}" пока нет работ.
+              </div>
+            </AnimatedSection>
+          ) : (
+            // Обычная сетка для остальных категорий
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {filteredItems.map((item, index) => renderPortfolioItem(item, index))}
             </div>
-          </AnimatedSection>
-        ) : activeFilter === 'proven' ? (
-          // Специальная компоновка для категории "Интерьеры"
-          renderInteriorLayout()
-        ) : (
-          // Обычная сетка для остальных категорий
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {filteredItems.map((item, index) => renderPortfolioItem(item, index))}
-          </div>
+          )
         )}
       </div>
+
+      {/* Специальная компоновка для категории "Интерьеры" - вне контейнера */}
+      {activeFilter === 'proven' && renderInteriorLayout()}
 
       {/* Улучшенное модальное окно */}
       <ImageModal

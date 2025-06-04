@@ -196,54 +196,51 @@ const Portfolio = () => {
     return (
       <div className="w-full -mt-16">
 {/* Главная карточка на весь экран */}
-<AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[500px] overflow-hidden group w-full">
-  <div className="absolute inset-0">
-    {mainImages.length > 1 ? (
-      <Splide options={{
-        type: 'loop',
-        gap: '0rem',
-        arrows: true,
-        pagination: true,
-        height: '100%',
-        perPage: 1,
-        perMove: 1,
-        autoplay: true,
-        interval: 5000,
-        pauseOnHover: true,
-        speed: 800,
-        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-      }}>
-        {mainImages.map((image: string, imgIndex: number) => (
-          <SplideSlide key={`main-${mainItem.id}-${imgIndex}`}>
-            <div className="relative h-full flex items-center justify-center">
+        <AnimatedSection animation="fadeIn" className="relative h-[70vh] min-h-[500px] overflow-hidden group w-full">
+          <div className="absolute inset-0">
+            {mainImages.length > 1 ? (
+              <Splide options={{
+                type: 'loop',
+                gap: '0rem',
+                arrows: true,
+                pagination: true,
+                height: '100%',
+                perPage: 1,
+                perMove: 1,
+                autoplay: true,
+                interval: 5000,
+                pauseOnHover: true,
+                speed: 800,
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+              }}>
+                {mainImages.map((image: string, imgIndex: number) => (
+                  <SplideSlide key={`main-${mainItem.id}-${imgIndex}`}>
+                    <div className="relative h-full">
+                      <OptimizedImage
+                        src={image}
+                        alt={mainItem.title || 'Главный проект интерьера'}
+                        className="w-full h-full"
+                        objectFit="contain"
+                        priority={true}
+                        onClick={() => openModal(mainItem, imgIndex)}
+                      />
+                    </div>
+                  </SplideSlide>
+                ))}
+              </Splide>
+            ) : mainImages.length === 1 ? (
               <OptimizedImage
-                src={image}
+                src={mainImages[0]}
                 alt={mainItem.title || 'Главный проект интерьера'}
-                className="w-full h-full object-contain"
+                className="w-full h-full"
+                objectFit="cover"
                 priority={true}
-                onClick={() => openModal(mainItem, imgIndex)}
+                onClick={() => openModal(mainItem, 0)}
               />
-            </div>
-          </SplideSlide>
-        ))}
-      </Splide>
-    ) : mainImages.length === 1 ? (
-      <div className="relative h-full flex items-center justify-center">
-        <OptimizedImage
-          src={mainImages[0]}
-          alt={mainItem.title || 'Главный проект интерьера'}
-          className="w-full h-full object-contain"
-          priority={true}
-          onClick={() => openModal(mainItem, 0)}
-        />
-      </div>
-    ) : (
-      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-        <span className="text-gray-500">Нет изображения</span>
-      </div>
-    )}
-  </div>
-</AnimatedSection>
+            ) : (
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Нет изображения</span>
+              </div>
 
           {/* Контент поверх изображения */}
           <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">

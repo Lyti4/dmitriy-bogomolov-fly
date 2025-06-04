@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimatedSection from './AnimatedSection';
 
 const Services: React.FC = () => {
   const services = [
@@ -36,95 +37,143 @@ const Services: React.FC = () => {
     }
   ];
 
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactsElement = document.getElementById('contacts');
+    if (contactsElement) {
+      contactsElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
+
   return (
-    <section id="services" className="py-16 relative bg-[#FEFDF7]"> 
+    <section id="services" className="py-16 md:py-20 relative bg-gradient-to-b from-[#FEFDF7] to-white">
       {/* Лёгкий фон с текстурой */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")', 
-          opacity: 0.1,
+          backgroundImage: 'url("https://www.transparenttextures.com/patterns/graph-paper.png")',
+          opacity: 0.05,
         }}
       ></div>
-      <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
 
       <div className="relative container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-light text-center mb-4">
-          <span className="font-medium">Услуги</span>
-        </h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          Мы предлагаем полный цикл проектирования и реализации мебельных решений — от дизайна до установки.
-        </p>
+        <AnimatedSection animation="fadeIn" className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-light mb-4">
+            <span className="font-medium text-[#8DB892]">Услуги</span>
+          </h2>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            Мы предлагаем полный цикл проектирования и реализации мебельных решений — от дизайна до установки.
+          </p>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 mb-16">
           {services.map((service, index) => (
-            <div
+            <AnimatedSection
               key={index}
-              id={service.id}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow transition-shadow duration-300"
+              animation="slideUp"
+              delay={index * 150}
+              className="group"
             >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
-                  }}
-                />
+              <div
+                id={service.id}
+                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-full transform group-hover:-translate-y-2"
+              >
+                <div className="h-48 md:h-56 overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src =
+                        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OGIiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+                    }}
+                  />
+                </div>
+                <div className="p-6 md:p-8 flex flex-col h-full">
+                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm md:text-base mb-6 flex-grow leading-relaxed">
+                    {service.description}
+                  </p>
+                  <button
+                    onClick={handleContactClick}
+                    className="inline-flex items-center text-[#8DB892] hover:text-[#7BA583] font-medium transition-all duration-300 text-sm md:text-base group/button"
+                  >
+                    Заказать услугу
+                    <svg
+                      className="ml-2 w-4 h-4 transform group-hover/button:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-              <div className="p-5">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">{service.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                <a
-                  href="#contacts"
-                  className="inline-block text-[#A89C8C] hover:text-[#8E7B6B] font-medium transition-colors text-sm"
-                >
-                  Заказать услугу →
-                </a>
-              </div>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
 
-        <div className="mt-16 bg-white p-6 md:p-8 rounded-lg shadow-md border border-[#E6E2D9]">
-          <h3 className="text-xl font-medium text-gray-800 mb-4">Как мы работаем</h3>
+        <AnimatedSection animation="slideUp" delay={600}>
+          <div className="bg-white p-6 md:p-8 lg:p-12 rounded-xl shadow-lg border border-[#E6E2D9]">
+            <h3 className="text-2xl md:text-3xl font-medium text-gray-800 mb-8 text-center">
+              Как мы работаем
+            </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                <span className="font-medium">1</span>
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">Знакомство</h4>
-              <p className="text-xs text-gray-600">Обсуждаем ваши идеи и особенности пространства</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                <span className="font-medium">2</span>
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">Проект</h4>
-              <p className="text-xs text-gray-600">Создаем чертежи и визуализацию будущей мебели</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                <span className="font-medium">3</span>
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">Создание</h4>
-              <p className="text-xs text-gray-600">Вручную изготавливаем мебель с любовью к деталям</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-[#A89C8C] text-white w-10 h-10 rounded-full flex items-center justify-center mb-3">
-                <span className="font-medium">4</span>
-              </div>
-              <h4 className="font-medium text-gray-800 mb-2">Установка</h4>
-              <p className="text-xs text-gray-600">Привозим и собираем мебель у вас дома</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  number: 1,
+                  title: "Знакомство",
+                  description: "Обсуждаем ваши идеи и особенности пространства"
+                },
+                {
+                  number: 2,
+                  title: "Проект",
+                  description: "Создаем чертежи и визуализацию будущей мебели"
+                },
+                {
+                  number: 3,
+                  title: "Создание",
+                  description: "Вручную изготавливаем мебель с любовью к деталям"
+                },
+                {
+                  number: 4,
+                  title: "Установка",
+                  description: "Привозим и собираем мебель у вас дома"
+                }
+              ].map((step, index) => (
+                <AnimatedSection
+                  key={index}
+                  animation="slideUp"
+                  delay={700 + index * 100}
+                  className="flex flex-col items-center text-center group"
+                >
+                  <div className="relative mb-4">
+                    <div className="bg-gradient-to-br from-[#8DB892] to-[#7BA583] text-white w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <span className="font-bold text-lg md:text-xl">{step.number}</span>
+                    </div>
+                    {index < 3 && (
+                      <div className="hidden lg:block absolute top-6 left-full w-full h-0.5 bg-gradient-to-r from-[#8DB892] to-[#E6E2D9]"></div>
+                    )}
+                  </div>
+                  <h4 className="font-semibold text-gray-800 mb-3 text-lg group-hover:text-[#8DB892] transition-colors">
+                    {step.title}
+                  </h4>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                    {step.description}
+                  </p>
+                </AnimatedSection>
+              ))}
             </div>
           </div>
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

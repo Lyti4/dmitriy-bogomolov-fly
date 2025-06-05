@@ -253,12 +253,7 @@ const Portfolio = () => {
               </svg>
             </div>
 
-            {/* Индикатор количества фото */}
-            {mainImages.length > 1 && (
-              <div className="absolute top-4 left-4 bg-black/50 text-white text-sm px-3 py-1.5 rounded-full backdrop-blur-sm">
-                📷 {mainImages.length}
-              </div>
-            )}
+
           </div>
 
           {/* Контент поверх изображения - мобильная версия (левый верхний угол) */}
@@ -331,7 +326,7 @@ const Portfolio = () => {
             }}>
               {otherItems.map((item, index) => (
                 <SplideSlide key={`other-${item.id}-${index}`}>
-                  <div className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
+                  <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
                        onClick={() => openModal(item, 0)}>
                     <div className="relative h-24 sm:h-32 md:h-48 lg:h-56 xl:h-64 overflow-hidden flex-shrink-0">
                       <OptimizedImage
@@ -348,23 +343,18 @@ const Portfolio = () => {
                         </svg>
                       </div>
 
-                      {/* Индикатор количества фото для слайдера */}
-                      {item.images && item.images.length > 1 && (
-                        <div className="absolute bottom-1 left-1 sm:bottom-2 sm:left-2 bg-black/70 text-white text-xs px-1 py-0.5 sm:px-1.5 rounded-full backdrop-blur-sm">
-                          📷 {item.images.length}
-                        </div>
-                      )}
+
                     </div>
 
                     <div className="p-2 sm:p-3 md:p-4 flex-grow flex flex-col">
                       {item.title && (
-                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-white group-hover:text-white transition-colors line-clamp-2">
+                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-black transition-colors line-clamp-2">
                           {item.title}
                         </h4>
                       )}
                       {(item.fullDescription || item.description) && (
                         <div
-                          className="text-gray-600 text-xs line-clamp-2 flex-grow hidden sm:block"
+                          className="text-black text-xs line-clamp-2 flex-grow hidden sm:block"
                           dangerouslySetInnerHTML={{
                             __html: renderMarkdown(item.fullDescription || item.description || '')
                           }}
@@ -400,7 +390,7 @@ const Portfolio = () => {
         key={`${item.id}-${index}`}
         animation="slideUp"
         delay={index * 100}
-        className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-gray-800 h-full flex flex-col"
+        className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white h-full flex flex-col"
       >
         <div className="relative overflow-hidden flex-shrink-0">
           <ImageGallery
@@ -415,13 +405,13 @@ const Portfolio = () => {
         {(item.title || item.fullDescription || item.description) && (
           <div className="p-4 md:p-6 flex-grow flex flex-col">
             {item.title && (
-              <h3 className="font-semibold text-lg mb-2 text-white group-hover:text-white transition-colors line-clamp-2">
+              <h3 className="font-semibold text-lg mb-2 text-black transition-colors line-clamp-2">
                 {item.title}
               </h3>
             )}
             {(item.fullDescription || item.description) && (
               <div
-                className="text-gray-600 text-sm prose prose-sm max-w-none line-clamp-3 flex-grow"
+                className="text-black text-sm prose prose-sm max-w-none line-clamp-3 flex-grow"
                 dangerouslySetInnerHTML={{
                   __html: renderMarkdown(item.fullDescription || item.description || '')
                 }}

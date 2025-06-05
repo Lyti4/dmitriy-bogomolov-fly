@@ -75,9 +75,7 @@ const ImageGallery = ({ images, alt, onImageClick, className = '', title }: Imag
 
         {/* Overlay с информацией */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300">
-          <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-            {currentIndex + 1} из {images.length}
-          </div>
+
 
           {/* Иконка увеличения */}
           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -86,11 +84,7 @@ const ImageGallery = ({ images, alt, onImageClick, className = '', title }: Imag
             </svg>
           </div>
 
-          {title && (
-            <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded-lg backdrop-blur-sm max-w-[70%]">
-              <h3 className="font-medium text-sm">{title}</h3>
-            </div>
-          )}
+
         </div>
       </div>
 

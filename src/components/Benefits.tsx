@@ -92,7 +92,7 @@ const Benefits = () => {
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 text-sm md:text-base line-clamp-3 sm:line-clamp-none">
                   {benefit.description}
                 </p>
               </div>

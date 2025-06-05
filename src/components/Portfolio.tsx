@@ -161,7 +161,7 @@ const Portfolio = () => {
     setModalImages(allImages);
     setCurrentImageIndex(imageIndex);
     setModalTitle(item.title || 'Проект');
-    setModalDescription(renderMarkdown(item.fullDescription || item.description || ''));
+    setModalDescription('');
     setIsModalOpen(true);
   };
 
@@ -196,7 +196,7 @@ const Portfolio = () => {
     return (
       <div className="w-full">
         {/* Главная карточка на весь экран */}
-        <AnimatedSection animation="fadeIn" className="relative h-[70vh] sm:h-[80vh] min-h-[600px] sm:min-h-[800px] overflow-hidden group w-full">
+        <AnimatedSection animation="fadeIn" className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] min-h-[350px] sm:min-h-[400px] md:min-h-[600px] lg:min-h-[800px] overflow-hidden group w-full">
           <div className="absolute inset-0">
             {mainImages.length > 1 ? (
               <Splide options={{
@@ -263,15 +263,15 @@ const Portfolio = () => {
 
           {/* Контент поверх изображения - мобильная версия (левый верхний угол) */}
           <div className="absolute top-4 left-4 right-4 z-20 md:hidden">
-            <div className="max-w-xs bg-black/60 backdrop-blur-md rounded-lg p-3 shadow-2xl">
+            <div className="max-w-xs bg-black/60 backdrop-blur-md rounded-lg p-2 shadow-2xl">
               {mainItem.title && (
-                <h3 className="text-lg font-bold mb-2 text-white drop-shadow-2xl">
+                <h3 className="text-xs font-bold mb-1 text-white drop-shadow-2xl">
                   {mainItem.title}
                 </h3>
               )}
               {(mainItem.fullDescription || mainItem.description) && (
                 <div
-                  className="text-xs leading-relaxed text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
+                  className="text-[8px] leading-relaxed text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
                   dangerouslySetInnerHTML={{
                     __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
                   }}
@@ -302,13 +302,12 @@ const Portfolio = () => {
 
         {/* Остальные карточки в слайдере - исправленное позиционирование */}
         {otherItems.length > 0 && (
-          <div className="container mx-auto px-4 lg:px-8 py-8 mt-8">
-            <AnimatedSection animation="slideUp" delay={200}>
-              <div className="mb-6">
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+          <div className="container mx-auto px-2 md:px-4 lg:px-8 py-0 mt-0 md:py-8 md:mt-8">
+              <div className="mb-1 mt-2 md:mb-6 md:mt-0">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-800 mb-0 md:mb-2">
                   Другие проекты интерьеров
                 </h3>
-                <p className="text-gray-600">Нажмите на любой проект, чтобы увидеть детали</p>
+                <p className="text-sm md:text-base text-gray-600 hidden md:block">Нажмите на любой проект, чтобы увидеть детали</p>
               </div>
 
             <Splide options={{
@@ -332,7 +331,7 @@ const Portfolio = () => {
             }}>
               {otherItems.map((item, index) => (
                 <SplideSlide key={`other-${item.id}-${index}`}>
-                  <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
+                  <div className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
                        onClick={() => openModal(item, 0)}>
                     <div className="relative h-24 sm:h-32 md:h-48 lg:h-56 xl:h-64 overflow-hidden flex-shrink-0">
                       <OptimizedImage
@@ -359,7 +358,7 @@ const Portfolio = () => {
 
                     <div className="p-2 sm:p-3 md:p-4 flex-grow flex flex-col">
                       {item.title && (
-                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
+                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-white group-hover:text-white transition-colors line-clamp-2">
                           {item.title}
                         </h4>
                       )}
@@ -376,7 +375,6 @@ const Portfolio = () => {
                 </SplideSlide>
               ))}
             </Splide>
-            </AnimatedSection>
           </div>
         )}
       </div>
@@ -402,7 +400,7 @@ const Portfolio = () => {
         key={`${item.id}-${index}`}
         animation="slideUp"
         delay={index * 100}
-        className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white h-full flex flex-col"
+        className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-gray-800 h-full flex flex-col"
       >
         <div className="relative overflow-hidden flex-shrink-0">
           <ImageGallery
@@ -417,7 +415,7 @@ const Portfolio = () => {
         {(item.title || item.fullDescription || item.description) && (
           <div className="p-4 md:p-6 flex-grow flex flex-col">
             {item.title && (
-              <h3 className="font-semibold text-lg mb-2 text-gray-900 group-hover:text-[#8DB892] transition-colors line-clamp-2">
+              <h3 className="font-semibold text-lg mb-2 text-white group-hover:text-white transition-colors line-clamp-2">
                 {item.title}
               </h3>
             )}

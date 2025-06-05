@@ -16,16 +16,14 @@ const HeroBanner = () => {
   };
 
   return (
-    <section className="relative h-screen min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] overflow-hidden">
+    <section className="relative h-[80vh] sm:h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[800px] overflow-hidden">
       {/* Фоновое изображение */}
       <div className="absolute inset-0">
         <img
           src="/images/vidGlav.jpg"
           alt="Геометрия. Тишина. Совершенство."
-          className="w-full h-full object-cover object-center sm:object-center lg:scale-105 animate-slow-zoom"
+          className="w-full h-full object-cover object-top sm:object-center animate-slow-zoom"
         />
-        {/* Overlay для лучшей читаемости */}
-        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Контент баннера */}

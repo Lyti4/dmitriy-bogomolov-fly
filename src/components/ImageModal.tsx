@@ -10,11 +10,11 @@ interface ImageModalProps {
   description?: string;
 }
 
-const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, projectTitle, description }: ImageModalProps) => {
+const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, projectTitle }: ImageModalProps) => {
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
   const modalRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -25,7 +25,6 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setIsImageLoaded(false);
-      setIsDescriptionExpanded(false);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -187,39 +186,18 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
           onLoad={() => setIsImageLoaded(true)}
           draggable={false}
           style={{
-            maxHeight: description ? 'calc(100vh - 120px)' : '90vh',
+            maxHeight: '90vh',
             width: 'auto',
             height: 'auto'
           }}
         />
       </div>
 
-      {/* Description overlay - частично скрытое описание */}
-      {description && (
-        <div className={`absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 via-black/60 to-transparent backdrop-blur-sm transition-all duration-300 ${
-          isDescriptionExpanded ? 'h-auto max-h-[50vh] overflow-y-auto' : 'h-20'
-        }`}>
-          <div className="p-4 pt-8">
-            <div className={`text-white transition-all duration-300 ${
-              isDescriptionExpanded ? '' : 'line-clamp-2'
-            }`}>
-              <div dangerouslySetInnerHTML={{ __html: description }} />
-            </div>
-            <button
-              onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-              className="mt-2 text-white/80 hover:text-white text-sm underline transition-colors"
-            >
-              {isDescriptionExpanded ? 'Скрыть описание ↑' : 'Показать полное описание ↓'}
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* Image indicators */}
       {images.length > 1 && (
-        <div className={`absolute z-50 flex space-x-2 ${
-          description ? 'bottom-24' : 'bottom-4'
-        } left-1/2 transform -translate-x-1/2`}>
+        <div className="absolute z-50 flex space-x-2 bottom-4 left-1/2 transform -translate-x-1/2">
           {images.map((_, index) => (
             <button
               key={index}
@@ -232,10 +210,7 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
         </div>
       )}
 
-      {/* Swipe instruction for mobile */}
-      <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-50 text-white text-sm opacity-75 md:hidden">
-        ← Свайпайте для навигации →
-      </div>
+
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import '@splidejs/splide/dist/css/splide.min.css';
 import OptimizedImage from './OptimizedImage';
 import ImageModal from './ImageModal';
+import ImageGallery from './ImageGallery';
 import AnimatedSection from './AnimatedSection';
 import { loadPortfolioData } from '../utils/portfolioLoader';
 
@@ -49,6 +50,7 @@ const Portfolio = () => {
   const [modalImages, setModalImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalTitle, setModalTitle] = useState('');
+  const [modalDescription, setModalDescription] = useState('');
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [windowSize, setWindowSize] = useState({
@@ -159,6 +161,7 @@ const Portfolio = () => {
     setModalImages(allImages);
     setCurrentImageIndex(imageIndex);
     setModalTitle(item.title || 'Проект');
+    setModalDescription(renderMarkdown(item.fullDescription || item.description || ''));
     setIsModalOpen(true);
   };
 
@@ -166,29 +169,11 @@ const Portfolio = () => {
     setIsModalOpen(false);
     setModalImages([]);
     setCurrentImageIndex(0);
+    setModalDescription('');
     setModalTitle('');
   };
 
-  // Улучшенные настройки слайдера для мобильных устройств
-  const getSliderOptions = () => {
-    const isMobile = windowSize.width < 768;
-    return {
-      type: 'loop' as const,
-      gap: '0.5rem',
-      arrows: !isMobile,
-      pagination: !isMobile, // Скрываем точки на мобильных устройствах
-      height: isMobile ? 250 : 320,
-      perPage: 1,
-      perMove: 1,
-      wheel: true,
-      wheelSleep: 300,
-      drag: true,
-      swipe: true,
-      snap: true,
-      speed: 400,
-      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-    };
-  };
+
 
   // Рендер специальной компоновки для категории "Интерьеры"
   const renderInteriorLayout = () => {
@@ -420,66 +405,13 @@ const Portfolio = () => {
         className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 bg-white h-full flex flex-col"
       >
         <div className="relative overflow-hidden flex-shrink-0">
-          {allImages.length > 1 ? (
-            <Splide options={getSliderOptions()}>
-              {allImages.map((image: string, imgIndex: number) => (
-                <SplideSlide key={`${item.id}-${image}-${imgIndex}`}>
-                  <div
-                    className="relative cursor-pointer group/image"
-                    onClick={() => openModal(item, imgIndex)}
-                  >
-                    <div className="w-full h-64 sm:h-72 bg-gray-100 flex items-center justify-center overflow-hidden">
-                      <OptimizedImage
-                        src={image}
-                        alt={item.title || 'Фото работы из портфолио'}
-                        className="w-full h-full transition-transform duration-500 group-hover/image:scale-105"
-                        objectFit="cover"
-                        priority={index < 3}
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
-                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
-                      <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                      </svg>
-                    </div>
-                  </div>
-                </SplideSlide>
-              ))}
-            </Splide>
-          ) : allImages.length === 1 ? (
-            <div
-              className="relative cursor-pointer group/image"
-              onClick={() => openModal(item, 0)}
-            >
-              <div className="w-full h-64 sm:h-72 bg-gray-100 flex items-center justify-center overflow-hidden">
-                <OptimizedImage
-                  src={allImages[0]}
-                  alt={item.title || 'Фото работы из портфолио'}
-                  className="w-full h-full transition-transform duration-500 group-hover/image:scale-105"
-                  objectFit="cover"
-                  priority={index < 3}
-                />
-              </div>
-              <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors duration-300" />
-              <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
-                <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                </svg>
-              </div>
-            </div>
-          ) : (
-            <div className="w-full h-64 sm:h-72 bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500">Нет изображения</span>
-            </div>
-          )}
-
-          {/* Индикатор количества фото */}
-          {allImages.length > 1 && (
-            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-              📷 {allImages.length}
-            </div>
-          )}
+          <ImageGallery
+            images={allImages}
+            alt={item.title || 'Фото работы из портфолио'}
+            onImageClick={(imgIndex) => openModal(item, imgIndex)}
+            title={item.title}
+            className="h-auto"
+          />
         </div>
 
         {(item.title || item.fullDescription || item.description) && (
@@ -576,6 +508,7 @@ const Portfolio = () => {
         currentIndex={currentImageIndex}
         onIndexChange={setCurrentImageIndex}
         projectTitle={modalTitle}
+        description={modalDescription}
       />
     </section>
   );

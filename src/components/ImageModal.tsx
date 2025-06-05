@@ -7,13 +7,14 @@ interface ImageModalProps {
   currentIndex: number;
   onIndexChange: (index: number) => void;
   projectTitle?: string;
+  description?: string;
 }
 
-const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, projectTitle }: ImageModalProps) => {
-  const [isZoomed, setIsZoomed] = useState(false);
+const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, projectTitle, description }: ImageModalProps) => {
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -24,9 +25,9 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setIsImageLoaded(false);
+      setIsDescriptionExpanded(false);
     } else {
       document.body.style.overflow = 'unset';
-      setIsZoomed(false);
     }
 
     return () => {
@@ -100,9 +101,7 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
     }
   };
 
-  const handleImageClick = () => {
-    setIsZoomed(!isZoomed);
-  };
+
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === modalRef.current) {
@@ -143,56 +142,84 @@ const ImageModal = ({ isOpen, onClose, images, currentIndex, onIndexChange, proj
         </div>
       )}
 
-      {/* Previous button */}
-      {currentIndex > 0 && (
-        <button
-          onClick={navigatePrevious}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 z-50 p-3 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all hover:scale-110"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-      )}
+      {/* Previous button - всегда видимые */}
+      <button
+        onClick={navigatePrevious}
+        disabled={currentIndex === 0}
+        className={`absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-50 p-2 md:p-3 rounded-full text-white transition-all ${
+          currentIndex === 0
+            ? 'bg-black/20 cursor-not-allowed opacity-50'
+            : 'bg-black/50 hover:bg-black/70 hover:scale-110'
+        }`}
+      >
+        <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
-      {/* Next button */}
-      {currentIndex < images.length - 1 && (
-        <button
-          onClick={navigateNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 p-3 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all hover:scale-110"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      )}
+      {/* Next button - всегда видимые */}
+      <button
+        onClick={navigateNext}
+        disabled={currentIndex === images.length - 1}
+        className={`absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-50 p-2 md:p-3 rounded-full text-white transition-all ${
+          currentIndex === images.length - 1
+            ? 'bg-black/20 cursor-not-allowed opacity-50'
+            : 'bg-black/50 hover:bg-black/70 hover:scale-110'
+        }`}
+      >
+        <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
       {/* Main image */}
-      <div className="relative w-full h-full flex items-center justify-center p-4">
+      <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8">
         <img
           ref={imageRef}
           src={images[currentIndex]}
           alt={`${projectTitle || 'Изображение'} - ${currentIndex + 1}`}
-          className={`max-w-full max-h-full max-h-[90vh] object-contain cursor-pointer transition-all duration-300 ${
-            isZoomed ? 'scale-150' : 'scale-100'
-          } ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onClick={handleImageClick}
+          className={`max-w-full max-h-full object-contain transition-opacity duration-300 ${
+            isImageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           onLoad={() => setIsImageLoaded(true)}
           draggable={false}
+          style={{
+            maxHeight: description ? 'calc(100vh - 120px)' : '90vh',
+            width: 'auto',
+            height: 'auto'
+          }}
         />
       </div>
 
-      {/* Zoom indicator */}
-      <div className="absolute bottom-4 right-4 z-50 p-2 rounded-lg bg-black/50 text-white text-sm backdrop-blur-sm">
-        {isZoomed ? '🔍 Нажмите для уменьшения' : '🔍 Нажмите для увеличения'}
-      </div>
+      {/* Description overlay - частично скрытое описание */}
+      {description && (
+        <div className={`absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 via-black/60 to-transparent backdrop-blur-sm transition-all duration-300 ${
+          isDescriptionExpanded ? 'h-auto max-h-[50vh] overflow-y-auto' : 'h-20'
+        }`}>
+          <div className="p-4 pt-8">
+            <div className={`text-white transition-all duration-300 ${
+              isDescriptionExpanded ? '' : 'line-clamp-2'
+            }`}>
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            </div>
+            <button
+              onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+              className="mt-2 text-white/80 hover:text-white text-sm underline transition-colors"
+            >
+              {isDescriptionExpanded ? 'Скрыть описание ↑' : 'Показать полное описание ↓'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Image indicators */}
       {images.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 flex space-x-2">
+        <div className={`absolute z-50 flex space-x-2 ${
+          description ? 'bottom-24' : 'bottom-4'
+        } left-1/2 transform -translate-x-1/2`}>
           {images.map((_, index) => (
             <button
               key={index}

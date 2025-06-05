@@ -15,6 +15,8 @@ interface OptimizedImageProps {
   onClick?: () => void;
   quality?: number;
   sizes?: string;
+  srcSet?: string;
+  loading?: 'lazy' | 'eager';
 }
 
 // Кэш для уже загруженных изображений
@@ -29,7 +31,9 @@ const OptimizedImage = ({
   objectFit="contain",
   priority = false,
   onClick,
-  sizes
+  sizes,
+  srcSet,
+  loading = 'lazy'
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(() => imageCache.has(src));
   const [error, setError] = useState(false);
@@ -125,15 +129,17 @@ const OptimizedImage = ({
       <img
         ref={imageRef}
         src={priority ? imageSrc : undefined}
+        srcSet={srcSet}
         alt={alt}
         width={width}
         height={height}
-        loading={priority ? 'eager' : 'lazy'}
+        loading={priority ? 'eager' : loading}
         onLoad={handleLoad}
         onError={handleError}
         onClick={onClick}
         sizes={sizes}
         decoding="async"
+        fetchPriority={priority ? 'high' : 'auto'}
         style={{
           objectFit,
           width: '100%',

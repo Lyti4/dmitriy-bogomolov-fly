@@ -53,23 +53,9 @@ const Portfolio = () => {
   const [modalDescription, setModalDescription] = useState('');
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800
-  });
+  const [expandedCards, setExpandedCards] = useState<Set<string | number>>(new Set());
 
-  // Отслеживание изменения размера окна
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     // Загружаем данные портфолио
@@ -173,6 +159,18 @@ const Portfolio = () => {
     setModalTitle('');
   };
 
+  const toggleCardExpansion = (itemId: string | number) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId);
+      } else {
+        newSet.add(itemId);
+      }
+      return newSet;
+    });
+  };
+
 
 
   // Рендер специальной компоновки для категории "Интерьеры"
@@ -256,17 +254,17 @@ const Portfolio = () => {
 
           </div>
 
-          {/* Контент поверх изображения - мобильная версия (левый верхний угол) */}
-          <div className="absolute top-4 left-4 right-4 z-20 md:hidden">
-            <div className="max-w-xs bg-black/60 backdrop-blur-md rounded-lg p-2 shadow-2xl">
+          {/* Контент поверх изображения - мобильная версия (нижний левый угол) */}
+          <div className="absolute bottom-4 left-4 z-20 block md:hidden">
+            <div className="max-w-xs">
               {mainItem.title && (
-                <h3 className="text-xs font-bold mb-1 text-white drop-shadow-2xl">
+                <h3 className="text-sm font-bold mb-1 text-white drop-shadow-2xl">
                   {mainItem.title}
                 </h3>
               )}
               {(mainItem.fullDescription || mainItem.description) && (
                 <div
-                  className="text-[8px] leading-relaxed text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
+                  className="text-xs leading-relaxed text-white line-clamp-2 [&_*]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white [&_p]:!text-white [&_li]:!text-white [&_strong]:!text-white [&_em]:!text-white drop-shadow-lg"
                   dangerouslySetInnerHTML={{
                     __html: renderMarkdown(mainItem.fullDescription || mainItem.description || '')
                   }}
@@ -276,8 +274,8 @@ const Portfolio = () => {
           </div>
 
           {/* Контент поверх изображения - десктопная версия (нижний левый угол) */}
-          <div className="absolute bottom-6 left-6 right-6 z-20 hidden md:block">
-            <div className="max-w-md bg-black/50 backdrop-blur-md rounded-lg p-6 shadow-2xl">
+          <div className="absolute bottom-6 left-6 z-20 hidden md:block">
+            <div className="max-w-md">
               {mainItem.title && (
                 <h3 className="text-2xl lg:text-3xl font-bold mb-3 text-white drop-shadow-2xl">
                   {mainItem.title}
@@ -294,40 +292,18 @@ const Portfolio = () => {
             </div>
           </div>
         </AnimatedSection>
-        {/* Остальные карточки в слайдере - исправленное позиционирование */}
+        {/* Карточки на полную ширину экрана */}
         {otherItems.length > 0 && (
-          <div className="container mx-auto px-2 md:px-4 lg:px-8 py-0 mt-0 md:py-4 md:mt-4">
-              <div className="mb-0 mt-0 md:mb-6 md:mt-0">
-                <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-800 mb-0 md:mb-2">
-                  Другие проекты интерьеров
-                </h3>
-                <p className="text-sm md:text-base text-gray-600 hidden md:block">Нажмите на любой проект, чтобы увидеть детали</p>
-              </div>
+          <div className="w-full px-4 md:px-8 py-4 mt-4">{/* Убрали container mx-auto чтобы растянуть на полную ширину */}
 
-            <Splide options={{
-              type: 'slide',
-              gap: '0.5rem',
-              arrows: windowSize.width >= 768,
-              pagination: false,
-              perPage: windowSize.width >= 1280 ? 3 : windowSize.width >= 1024 ? 2 : windowSize.width >= 768 ? 2 : 3.5,
-              perMove: 1,
-              breakpoints: {
-                480: { perPage: 3.5, gap: '0.5rem' },
-                640: { perPage: 3.5, gap: '0.5rem' },
-                768: { perPage: 2, gap: '0.75rem' },
-                1024: { perPage: 2, gap: '1rem' },
-                1280: { perPage: 3, gap: '1.5rem' }
-              },
-              wheel: true,
-              wheelSleep: 300,
-              drag: true,
-              swipe: true,
-            }}>
-              {otherItems.map((item, index) => (
-                <SplideSlide key={`other-${item.id}-${index}`}>
-                  <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group cursor-pointer transform hover:-translate-y-1 h-full flex flex-col"
-                       onClick={() => openModal(item, 0)}>
-                    <div className="relative h-24 sm:h-32 md:h-48 lg:h-56 xl:h-64 overflow-hidden flex-shrink-0">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
+              {otherItems.map((item, index) => {
+                const isExpanded = expandedCards.has(item.id);
+                return (
+                  <div key={`other-${item.id}-${index}`}
+                       className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group transform hover:-translate-y-1 h-full flex flex-col">
+                    <div className="relative h-20 sm:h-32 md:h-40 lg:h-48 xl:h-56 overflow-hidden flex-shrink-0 cursor-pointer"
+                         onClick={() => openModal(item, 0)}>
                       <OptimizedImage
                         src={item.image || (item.images && item.images[0]) || ''}
                         alt={item.title || 'Проект интерьера'}
@@ -336,24 +312,45 @@ const Portfolio = () => {
                         priority={index < 3}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                      <div className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-white/90 backdrop-blur-sm rounded-full p-1 sm:p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-white/90 backdrop-blur-sm rounded-full p-1 sm:p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                         </svg>
                       </div>
-
-
                     </div>
 
-                    <div className="p-2 sm:p-3 md:p-4 flex-grow flex flex-col">
-                      {item.title && (
-                        <h4 className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mb-1 text-black transition-colors line-clamp-2">
-                          {item.title}
-                        </h4>
-                      )}
+                    <div className="p-2 sm:p-3 lg:p-4 flex-grow flex flex-col">
+                      <div className="flex justify-between items-start mb-1 sm:mb-2">
+                        {item.title && (
+                          <h4 className="font-semibold text-xs sm:text-sm lg:text-base text-black transition-colors flex-grow line-clamp-2">
+                            {item.title}
+                          </h4>
+                        )}
+                        {(item.fullDescription || item.description) && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleCardExpansion(item.id);
+                            }}
+                            className="ml-1 sm:ml-2 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 flex-shrink-0"
+                          >
+                            <svg
+                              className={`w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-gray-600 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+
                       {(item.fullDescription || item.description) && (
                         <div
-                          className="text-black text-xs line-clamp-2 flex-grow hidden sm:block"
+                          className={`text-black text-xs sm:text-sm leading-relaxed transition-all duration-300 overflow-hidden ${
+                            isExpanded ? 'max-h-96' : 'max-h-8 sm:max-h-12 lg:max-h-16'
+                          } ${isExpanded ? '' : 'line-clamp-2 sm:line-clamp-3'}`}
                           dangerouslySetInnerHTML={{
                             __html: renderMarkdown(item.fullDescription || item.description || '')
                           }}
@@ -361,9 +358,9 @@ const Portfolio = () => {
                       )}
                     </div>
                   </div>
-                </SplideSlide>
-              ))}
-            </Splide>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>

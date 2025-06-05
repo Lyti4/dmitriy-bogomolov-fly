@@ -255,7 +255,7 @@ const Portfolio = () => {
           </div>
 
           {/* Контент поверх изображения - мобильная версия (нижний левый угол) */}
-          <div className="absolute bottom-8 left-4 z-20 block md:hidden">
+          <div className="absolute bottom-14 left-4 z-20 block md:hidden">
             <div className="max-w-xs">
               {mainItem.title && (
                 <h3 className="text-sm font-bold mb-1 text-white drop-shadow-2xl">

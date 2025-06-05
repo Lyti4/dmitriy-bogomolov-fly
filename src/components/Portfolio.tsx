@@ -302,7 +302,7 @@ const Portfolio = () => {
                 return (
                   <div key={`other-${item.id}-${index}`}
                        className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group transform hover:-translate-y-1 h-full flex flex-col">
-                    <div className="relative h-20 sm:h-32 md:h-40 lg:h-80 xl:h-56 overflow-hidden flex-shrink-0 cursor-pointer"
+                    <div className="relative h-20 sm:h-32 md:h-40 lg:h-80 xl:h-96 overflow-hidden flex-shrink-0 cursor-pointer"
                          onClick={() => openModal(item, 0)}>
                       <OptimizedImage
                         src={item.image || (item.images && item.images[0]) || ''}

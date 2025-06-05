@@ -63,7 +63,7 @@ const Benefits = () => {
         backgroundColor: '#FEFDF7'
       }}
     >
-      {/* Легкий overlay для смягчения текстуры */}
+      {/* Overlay */}
       <div className="absolute inset-0 bg-[#FAF8F4] opacity-70"></div>
 
       <div className="relative container mx-auto px-4">
@@ -76,7 +76,7 @@ const Benefits = () => {
           </p>
         </AnimatedSection>
 
-        {/* Все 4 карточки в одном ряду на всех экранах */}
+        {/* Responsive Grid: 2 cols on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {benefits.map((benefit, index) => (
             <AnimatedSection

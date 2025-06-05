@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import AnimatedSection from './AnimatedSection';
 
 const Benefits = () => {
@@ -55,6 +56,12 @@ const Benefits = () => {
     .replace(/\s+/g, '')
     .trim();
 
+  const [expandedCard, setExpandedCard] = useState(null);
+
+  const toggleDescription = (index) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
+
   return (
     <section
       className="py-16 md:py-20 relative overflow-hidden"
@@ -83,7 +90,8 @@ const Benefits = () => {
               key={index}
               animation="slideUp"
               delay={index * 150}
-              className="group"
+              className="group cursor-pointer"
+              onClick={() => toggleDescription(index)}
             >
               <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 text-center h-full transform group-hover:-translate-y-2">
                 <div className="flex justify-center items-center w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8DB892] to-[#7BA583] text-white transform group-hover:scale-110 transition-transform duration-300">
@@ -92,8 +100,11 @@ const Benefits = () => {
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600 text-sm md:text-base line-clamp-3 sm:line-clamp-none">
+                <p className={`text-gray-600 text-sm md:text-base ${expandedCard === index ? '' : 'line-clamp-3'}`}>
                   {benefit.description}
+                </p>
+                <p className="mt-2 text-xs text-[#8DB892]">
+                  {expandedCard === index ? 'Свернуть ▲' : 'Подробнее ▼'}
                 </p>
               </div>
             </AnimatedSection>

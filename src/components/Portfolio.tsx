@@ -196,7 +196,7 @@ const Portfolio = () => {
     return (
       <div className="w-full">
         {/* Главная карточка на весь экран */}
-        <AnimatedSection animation="fadeIn" className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] min-h-[350px] sm:min-h-[400px] md:min-h-[600px] lg:min-h-[800px] overflow-hidden group w-full">
+        <AnimatedSection animation="fadeIn" className="relative h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-[80vh] min-h-[300px] sm:min-h-[350px] md:min-h-[600px] lg:min-h-[800px] overflow-hidden group w-full">
           <div className="absolute inset-0">
             {mainImages.length > 1 ? (
               <Splide options={{
@@ -294,11 +294,10 @@ const Portfolio = () => {
             </div>
           </div>
         </AnimatedSection>
-
         {/* Остальные карточки в слайдере - исправленное позиционирование */}
         {otherItems.length > 0 && (
-          <div className="container mx-auto px-2 md:px-4 lg:px-8 py-0 mt-0 md:py-8 md:mt-8">
-              <div className="mb-1 mt-2 md:mb-6 md:mt-0">
+          <div className="container mx-auto px-2 md:px-4 lg:px-8 py-0 mt-0 md:py-4 md:mt-4">
+              <div className="mb-0 mt-0 md:mb-6 md:mt-0">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-800 mb-0 md:mb-2">
                   Другие проекты интерьеров
                 </h3>

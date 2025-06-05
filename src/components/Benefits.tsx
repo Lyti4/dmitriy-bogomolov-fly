@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import AnimatedSection from './AnimatedSection';
 
+// Тип для одного элемента benefits
+interface Benefit {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+}
+
 const Benefits = () => {
-  const benefits = [
+  const benefits: Benefit[] = [
     {
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,10 +63,10 @@ const Benefits = () => {
     .replace(/\s+/g, '')
     .trim();
 
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
-  const toggleDescription = (index) => {
-    setExpandedCard(expandedCard === index ? null : index);
+  const toggleDescription = (index: number) => {
+    setExpandedCard(prev => prev === index ? null : index);
   };
 
   return (
@@ -85,29 +92,33 @@ const Benefits = () => {
 
         {/* Responsive Grid: 2 cols on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-2 gap-6">
-          {benefits.map((benefit, index) => (
-            <AnimatedSection
+          {benefits.map((benefit, index: number) => (
+            <div
               key={index}
-              animation="slideUp"
-              delay={index * 150}
-              className="group cursor-pointer"
               onClick={() => toggleDescription(index)}
+              className="group cursor-pointer"
             >
-              <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 text-center h-full transform group-hover:-translate-y-2">
-                <div className="flex justify-center items-center w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8DB892] to-[#7BA583] text-white transform group-hover:scale-110 transition-transform duration-300">
-                  {benefit.icon}
+              <AnimatedSection
+                animation="slideUp"
+                delay={index * 150}
+                className="h-full"
+              >
+                <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 text-center h-full transform group-hover:-translate-y-2">
+                  <div className="flex justify-center items-center w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8DB892] to-[#7BA583] text-white transform group-hover:scale-110 transition-transform duration-300">
+                    {benefit.icon}
+                  </div>
+                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
+                    {benefit.title}
+                  </h3>
+                  <p className={`text-gray-600 text-sm md:text-base ${expandedCard === index ? '' : 'line-clamp-3'}`}>
+                    {benefit.description}
+                  </p>
+                  <p className="mt-2 text-xs text-[#8DB892]">
+                    {expandedCard === index ? 'Свернуть ▲' : 'Подробнее ▼'}
+                  </p>
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 group-hover:text-[#8DB892] transition-colors">
-                  {benefit.title}
-                </h3>
-                <p className={`text-gray-600 text-sm md:text-base ${expandedCard === index ? '' : 'line-clamp-3'}`}>
-                  {benefit.description}
-                </p>
-                <p className="mt-2 text-xs text-[#8DB892]">
-                  {expandedCard === index ? 'Свернуть ▲' : 'Подробнее ▼'}
-                </p>
-              </div>
-            </AnimatedSection>
+              </AnimatedSection>
+            </div>
           ))}
         </div>
       </div>
